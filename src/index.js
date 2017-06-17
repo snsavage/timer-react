@@ -2,25 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom'
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import rootReducer from './redux/reducers/root';
 import registerServiceWorker from './registerServiceWorker';
 
 import App from './containers/App';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const middleware = process.env.NODE_ENV !== 'production' ?
-  [require('redux-immutable-state-invariant').default(), thunk] :
-  [thunk];
+const composeEnhancers = composeWithDevTools({});
+const store = createStore(rootReducer, /* preloadedState, */ composeEnhancers(
+  applyMiddleware(thunk),
+));
 
-const store = createStore(
-  rootReducer,
-  composeEnhancers(
-    applyMiddleware(...middleware)
-  )
-)
 
 ReactDOM.render(
   <Provider store={store}>
