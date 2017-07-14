@@ -13,3 +13,16 @@ export function fetchRoutines() {
 
   };
 }
+
+export function fetchRoutine(id) {
+  return(dispatch) => {
+    dispatch({ type: 'LOADING_ROUTINE' });
+
+    return fetch(`/api/v1/routines/${id}`)
+      .then(response => response.json())
+      .then(routine => dispatch({
+        type: 'FETCH_ROUTINE',
+        payload: routine.routine,
+      }));
+  }
+}

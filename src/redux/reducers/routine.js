@@ -1,5 +1,14 @@
-export function routineReducer(state = {} , action) {
+export function routineReducer(state = {
+  loading: false,
+  routine: {},
+} , action) {
   switch(action.type) {
+    case 'LOADING_ROUTINE':
+      return Object.assign({}, state, { loading: true });
+    case 'FETCH_ROUTINE':
+      return Object.assign(
+        {}, state, { loading: false, routine: action.payload }
+      );
     default:
       return state;
   }

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom'
+// import { withRouter } from 'react-router-dom'
+import { Route, Link, Switch } from 'react-router-dom'
 
 import { fetchRoutines } from './../redux/actions/routineActions';
+import RoutinesShow from './RoutinesShow';
 
 class RoutinesIndex extends Component {
   componentDidMount() {
@@ -12,7 +14,11 @@ class RoutinesIndex extends Component {
 
   render() {
     const routines = this.props.routines.map((e, i) => {
-      return <li key={i}>{e.name}</li>
+      return (
+        <li key={i}>
+          <Link to={"/routines/" + e.id.toString()}>{e.name}</Link>
+        </li>
+      );
     });
     return (
       <div className="routines">
@@ -24,6 +30,7 @@ class RoutinesIndex extends Component {
           {routines}
         </ul>
         )}
+        <Route path='/routines/:routineId' component={RoutinesShow} />
       </div>
     );
   }
@@ -40,6 +47,4 @@ const mapDispatchToProps = (dispatch) => {
   return { fetchRoutines: bindActionCreators(fetchRoutines, dispatch)};
 }
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(RoutinesIndex)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(RoutinesIndex);
