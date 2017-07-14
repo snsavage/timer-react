@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
-// import { withRouter } from 'react-router-dom'
-import { Route, Link, Switch } from 'react-router-dom'
+import { Route, Link } from 'react-router-dom'
 
-import { fetchRoutines } from './../redux/actions/routineActions';
+import { fetchRoutines } from './../actions/routineActions';
 import RoutinesShow from './RoutinesShow';
 
 class RoutinesIndex extends Component {
