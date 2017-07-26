@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 import { Route, Link } from 'react-router-dom'
 
+import { secondsToMinutes } from './../formatters';
 import { fetchRoutines } from './../actions/routineActions';
 import RoutinesShow from './RoutinesShow';
 
@@ -16,6 +17,7 @@ class RoutinesIndex extends Component {
       return (
         <li key={i}>
           <Link to={"/routines/" + e.id.toString()}>{e.name}</Link>
+          {` - ${secondsToMinutes(e.duration)}`}
         </li>
       );
     });
