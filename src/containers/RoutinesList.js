@@ -12,7 +12,7 @@ class RoutinesList extends Component {
 
   render() {
     const routines = this.props.routines.map((element, index) => {
-      return <RoutineListItem routine={element} index={index} />
+      return <RoutineListItem routine={element} key={index} />
     });
 
     return (

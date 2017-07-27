@@ -5,9 +5,9 @@ import { secondsToMinutes } from './../formatters';
 
 export class RoutineListItem extends Component {
   render() {
-    const { routine, index } = this.props;
+    const { routine } = this.props;
     return (
-      <li key={index}>
+      <li>
         <Link to={"/routines/" + routine.id.toString()}>{routine.name}</Link>
         {` - ${secondsToMinutes(routine.duration)}`}
       </li>
