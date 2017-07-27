@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom'
 
 import Timer from './Timer';
-import RoutinesIndex from './RoutinesIndex';
+import RoutinesExplore from './RoutinesExplore';
 
 import './App.css';
 
@@ -19,7 +19,7 @@ class App extends Component {
           </nav>
           <div>
             <Route exact path='/' component={Timer} />
-            <Route path='/routines' component={RoutinesIndex} />
+            <Route path='/routines' component={RoutinesExplore} />
           </div>
       </main>
       </div>

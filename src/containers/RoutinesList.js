@@ -1,26 +1,20 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
-import { Route, Link } from 'react-router-dom'
 
-import { secondsToMinutes } from './../formatters';
+import { RoutineListItem } from './../components/RoutineListItem';
 import { fetchRoutines } from './../actions/routineActions';
-import RoutinesShow from './RoutinesShow';
 
-class RoutinesIndex extends Component {
+class RoutinesList extends Component {
   componentDidMount() {
     this.props.fetchRoutines();
   }
 
   render() {
-    const routines = this.props.routines.map((e, i) => {
-      return (
-        <li key={i}>
-          <Link to={"/routines/" + e.id.toString()}>{e.name}</Link>
-          {` - ${secondsToMinutes(e.duration)}`}
-        </li>
-      );
+    const routines = this.props.routines.map((element, index) => {
+      return <RoutineListItem routine={element} index={index} />
     });
+
     return (
       <div className="routines">
         <h1>Routines</h1>
@@ -31,7 +25,6 @@ class RoutinesIndex extends Component {
           {routines}
         </ul>
         )}
-        <Route path='/routines/:routineId' component={RoutinesShow} />
       </div>
     );
   }
@@ -48,4 +41,4 @@ const mapDispatchToProps = (dispatch) => {
   return { fetchRoutines: bindActionCreators(fetchRoutines, dispatch)};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoutinesIndex);
+export default connect(mapStateToProps, mapDispatchToProps)(RoutinesList);
