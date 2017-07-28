@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 
 import { fetchRoutine } from './../actions/routineActions';
+import { RoutineDetail } from './../components/RoutineDetail';
+import { RoutineGroups } from './../components/RoutineGroups';
 
 class RoutinesShow extends Component {
   componentWillMount() {
@@ -16,8 +18,7 @@ class RoutinesShow extends Component {
   }
 
   render() {
-    const { name, description, user_id } = this.props.routine.routine;
-    const loading = this.props.routine.loading;
+    const { routine, loading } = this.props.routine;
 
     return (
       <div className="routine">
@@ -25,9 +26,8 @@ class RoutinesShow extends Component {
           <h3>Loading...</h3>
         ) : (
           <div>
-            <h1>{name}</h1>
-            <p>{description}</p>
-            <p><em>{user_id}</em></p>
+            <RoutineDetail routine={routine} />
+            <RoutineGroups groups={routine.groups} />
           </div>
         )}
       </div>

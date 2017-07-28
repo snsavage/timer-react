@@ -1,5 +1,5 @@
 export function routineReducer(state = {
-  loading: false,
+  loading: true,
   routine: {},
 } , action) {
   switch(action.type) {
@@ -15,7 +15,7 @@ export function routineReducer(state = {
 }
 
 export function routinesReducer(state = {
-  loading: false,
+  loading: true,
   routines: [],
 }, action) {
   switch(action.type) {
