@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 
-import { RoutineListItem } from './../components/RoutineListItem';
 import { fetchRoutines } from './../actions/routineActions';
 
 class RoutinesList extends Component {
@@ -11,8 +10,16 @@ class RoutinesList extends Component {
   }
 
   render() {
-    const routines = this.props.routines.map((element, index) => {
-      return <RoutineListItem routine={element} key={index} />
+    const { routines, component, ...passThroughProps } = this.props;
+
+    const routineListElements = routines.map((element, index) => {
+      return (
+        React.createElement( component, {
+          routine: element,
+          key: index,
+          ...passThroughProps,
+        })
+      );
     });
 
     return (
@@ -22,7 +29,7 @@ class RoutinesList extends Component {
           <h3>Loading...</h3>
         ) : (
         <ul>
-          {routines}
+          { routineListElements }
         </ul>
         )}
       </div>

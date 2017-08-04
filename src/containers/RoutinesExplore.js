@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 
 import RoutinesList from './../containers/RoutinesList.js';
 import RoutinesShow from './RoutinesShow';
+import { RoutineListItem } from './../components/RoutineListItem';
 
 export default class RoutinesExplore extends Component {
   render() {
@@ -10,7 +11,7 @@ export default class RoutinesExplore extends Component {
       <div className="routines">
         <h1>Routines</h1>
 
-        <RoutinesList />
+        <RoutinesList component={RoutineListItem} />
         <Route path='/routines/:routineId' component={RoutinesShow} />
       </div>
     );

@@ -3,6 +3,7 @@ import { Route, Link } from 'react-router-dom'
 
 import Timer from './Timer';
 import RoutinesExplore from './RoutinesExplore';
+import RoutineTimer from './RoutineTimer';
 
 import './App.css';
 
@@ -13,13 +14,15 @@ class App extends Component {
         <main>
           <nav>
             <ul>
-              <li><Link to="/">Timer</Link></li>
+              <li><Link to="/">Basic Timer</Link></li>
+              <li><Link to="/timer/routine">Routine Timer</Link></li>
               <li><Link to="/routines">Routines</Link></li>
             </ul>
           </nav>
           <div>
             <Route exact path='/' component={Timer} />
             <Route path='/routines' component={RoutinesExplore} />
+            <Route path='/timer/routine' component={RoutineTimer} />
           </div>
       </main>
       </div>
