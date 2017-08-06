@@ -28,11 +28,21 @@ export function loadCurrentRoutine(id) {
 }
 
 export function clearCurrentRoutine() {
-  return {
-    type: 'CLEAR_CURRENT_ROUTINE'
-  }
+  return { type: 'CLEAR_CURRENT_ROUTINE' }
 }
 
+export function advanceCurrentRoutine() {
+  return { type: 'ADVANCE_TIMER' }
+}
+
+export function startCurrentRoutine() {
+  return(dispatch) => {
+    const timerId = setInterval(() => dispatch(advanceCurrentRoutine()), 1000);
+
+    dispatch({ type: 'START_TIMER', payload: timerId });
+    dispatch({ type: 'ADVANCE_TIMER' });
+  }
+}
 
 export function fetchRoutine(id) {
   return(dispatch) => {

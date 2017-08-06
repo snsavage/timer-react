@@ -3,12 +3,16 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
-import { loadCurrentRoutine, clearCurrentRoutine } from './../actions/routineActions';
+import {
+  loadCurrentRoutine, clearCurrentRoutine, startCurrentRoutine
+} from './../actions/routineActions';
+
 import RoutinesList from './../containers/RoutinesList';
 import { RoutineTimerListItem } from './../components/RoutineTimerListItem';
 import { RoutineDetail } from './../components/RoutineDetail';
 import { RoutineGroups } from './../components/RoutineGroups';
 import { displayTime } from './../utils/displayTime';
+import { remainingDuration } from './../utils/timer';
 
 export class ComplexTimer extends Component {
   componentWillMount() {
@@ -26,8 +30,20 @@ export class ComplexTimer extends Component {
     }
   }
 
-  handleClick = (event) => {
+  handleClearRoutineClick = (event) => {
     this.props.clearCurrentRoutine();
+  }
+
+  handleStartRoutineClick = (event) => {
+    // When start is clicked...
+    // Create a new interval with setInterval...
+    // Store this intervalId in store...
+    // Callback should be action/reducer to updateTimer
+    this.props.startCurrentRoutine();
+  }
+
+  handleStopRoutineClick = (event) => {
+    clearInterval(this.props.timerId);
   }
 
   render() {
@@ -49,7 +65,13 @@ export class ComplexTimer extends Component {
           ) : (
             <div>
               <h1>Complex Timer</h1>
-              <Link to="/timer/routine" onClick={this.handleClick}>Remove Routine</Link>
+              <Link
+                to="/timer/routine"
+                onClick={this.handleClearRoutineClick}>Remove Routine</Link>
+              <button onClick={this.handleStartRoutineClick}>Start</button>
+              <button onClick={this.handleStopRoutineClick}>Stop</button>
+              <h2>Total Time: {displayTime(currentRoutine.duration)}</h2>
+              <h2>Remaining Time: {displayTime(remainingDuration(playlist))}</h2>
               <ul>
                 {playlistList}
               </ul>
@@ -71,6 +93,7 @@ const mapStateToProps = (state, ownProps) => {
     loading: state.currentRoutine.loading,
     playlist: state.currentRoutine.playlist,
     routineId: ownProps.match.params.routineId,
+    timerId: state.currentRoutine.timerId,
   }
 }
 
@@ -78,6 +101,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadCurrentRoutine: bindActionCreators(loadCurrentRoutine, dispatch),
     clearCurrentRoutine: bindActionCreators(clearCurrentRoutine, dispatch),
+    startCurrentRoutine: bindActionCreators(startCurrentRoutine, dispatch),
   };
 };
 
