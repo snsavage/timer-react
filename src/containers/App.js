@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link } from 'react-router-dom'
+import { Route, Link, Switch } from 'react-router-dom'
 
 import Timer from './Timer';
 import RoutinesExplore from './RoutinesExplore';
@@ -21,8 +21,11 @@ class App extends Component {
           </nav>
           <div>
             <Route exact path='/' component={Timer} />
+            <Switch>
+              <Route path='/timer/routine/:routineId' component={RoutineTimer} />
+              <Route path='/timer/routine' component={RoutineTimer} />
+            </Switch>
             <Route path='/routines' component={RoutinesExplore} />
-            <Route path='/timer/routine' component={RoutineTimer} />
           </div>
       </main>
       </div>

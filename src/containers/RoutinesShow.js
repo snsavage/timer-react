@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { fetchRoutine } from './../actions/routineActions';
 import { RoutineDetail } from './../components/RoutineDetail';
@@ -27,6 +28,7 @@ class RoutinesShow extends Component {
         ) : (
           <div>
             <RoutineDetail routine={routine} />
+            <Link to={"/timer/routine/" + routine.id.toString()}>Play</Link>
             <RoutineGroups groups={routine.groups} />
           </div>
         )}
