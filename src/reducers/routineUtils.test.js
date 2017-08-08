@@ -196,16 +196,16 @@ describe("advancePlaylist()", () => {
       advancedPlaylist = advancePlaylist(state)
     });
 
-    it("decrements remainingDuration for the first track", () => {
-      expect(
-        advancedPlaylist.completedPlaylist[0].remainingDuration
-      ).toEqual(0);
-    });
-
     it("does not decrement the next track", () => {
       expect(
         advancedPlaylist.playlist[0].remainingDuration
       ).toBe(advancedPlaylist.playlist[0].duration);
+    });
+
+    it("resets the remainingDuration", () => {
+      expect(
+        advancedPlaylist.completedPlaylist[0].remainingDuration
+      ).toBe(advancedPlaylist.completedPlaylist[0].duration);
     });
   });
 
@@ -283,6 +283,15 @@ describe("rewindPlaylist()", () => {
     };
 
     expect(rewindPlaylist(newState)).toEqual(newState);
+  });
+
+  it("handles a finished playlist", () => {
+    const newState = {
+      playlist: [],
+      completedPlaylist: [...state.playlist, ...state.completedPlaylist],
+    };
+
+    expect(rewindPlaylist(newState).playlist.length).toBe(1);
   });
 });
 

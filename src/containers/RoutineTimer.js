@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import {
-  loadCurrentRoutine, clearCurrentRoutine, startCurrentRoutine
+  loadCurrentRoutine, clearCurrentRoutine, startCurrentRoutine, rewindCurrentRoutine,
 } from './../actions/routineActions';
 
 import RoutinesList from './../containers/RoutinesList';
@@ -28,6 +28,10 @@ export class ComplexTimer extends Component {
     if (routineId && nextRoutineId !== routineId) {
       this.props.loadCurrentRoutine(nextProps.match.params.routineId);
     }
+
+    if (nextProps.playlist.length === 0) {
+      clearInterval(this.props.timerId);
+    }
   }
 
   handleClearRoutineClick = (event) => {
@@ -46,16 +50,31 @@ export class ComplexTimer extends Component {
     clearInterval(this.props.timerId);
   }
 
+  handleRewindRoutineClick = (event) => {
+    clearInterval(this.props.timerId);
+    this.props.rewindCurrentRoutine();
+  }
+
   render() {
-    const { currentRoutine, loadCurrentRoutine, playlist, loading } = this.props;
+    const {
+      currentRoutine, loadCurrentRoutine, playlist, loading, completedPlaylist
+    } = this.props;
 
     const playlistList = playlist.map((e, index) => {
       return (
         <li key={index}>
-          {e.groupID} - {e.groupNumber} - {e.name} - {displayTime(e.duration)}
+          {e.groupID} - {e.groupNumber} - {e.name} - {displayTime(e.remainingDuration)}
         </li>
       )
     });
+
+    const completedPlaylistList = completedPlaylist.map((e, index) => {
+      return (
+        <li key={index}>
+          <em>{e.groupID} - {e.groupNumber} - {e.name} - {displayTime(0)}</em>
+        </li>
+      )
+    }).reverse();
 
     if(this.props.routineId) {
       return (
@@ -68,11 +87,16 @@ export class ComplexTimer extends Component {
               <Link
                 to="/timer/routine"
                 onClick={this.handleClearRoutineClick}>Remove Routine</Link>
-              <button onClick={this.handleStartRoutineClick}>Start</button>
-              <button onClick={this.handleStopRoutineClick}>Stop</button>
+              <div>
+                <button onClick={this.handleStartRoutineClick}>Start</button>
+                <button onClick={this.handleStopRoutineClick}>Stop</button>
+                <button onClick={this.handleRewindRoutineClick}>Rewind</button>
+              </div>
               <h2>Total Time: {displayTime(currentRoutine.duration)}</h2>
               <h2>Remaining Time: {displayTime(remainingDuration(playlist))}</h2>
+              <h3>Playlist</h3>
               <ul>
+                {completedPlaylistList}
                 {playlistList}
               </ul>
             </div>
@@ -94,6 +118,7 @@ const mapStateToProps = (state, ownProps) => {
     playlist: state.currentRoutine.playlist,
     routineId: ownProps.match.params.routineId,
     timerId: state.currentRoutine.timerId,
+    completedPlaylist: state.currentRoutine.completedPlaylist,
   }
 }
 
@@ -102,6 +127,7 @@ const mapDispatchToProps = (dispatch) => {
     loadCurrentRoutine: bindActionCreators(loadCurrentRoutine, dispatch),
     clearCurrentRoutine: bindActionCreators(clearCurrentRoutine, dispatch),
     startCurrentRoutine: bindActionCreators(startCurrentRoutine, dispatch),
+    rewindCurrentRoutine: bindActionCreators(rewindCurrentRoutine, dispatch),
   };
 };
 

@@ -2,7 +2,6 @@ import {
   createPlaylist,
   advancePlaylist,
   rewindPlaylist,
-  updatePlaylist,
 } from './routineUtils';
 
 export function routineReducer(state = {
@@ -59,15 +58,23 @@ export function currentRoutineReducer(state = {
       );
 
     case 'CLEAR_CURRENT_ROUTINE':
-      return Object.assign({}, state, { routine: {}, playlist: [] });
+      return Object.assign(
+        {}, state, { routine: {}, playlist: [], completedPlaylist: [] }
+      );
 
     case 'START_TIMER':
       return Object.assign({}, state, { timerId: action.payload });
 
     case 'ADVANCE_TIMER':
-      const updatedPlaylist = updatePlaylist(state.playlist);
+      return Object.assign(
+        {}, state, advancePlaylist(state)
+      );
 
-      return Object.assign({}, state, { playlist: updatedPlaylist });
+    case 'REWIND_TIMER':
+      return Object.assign(
+        {}, state, rewindPlaylist(state)
+      );
+
     default:
       return state;
   }

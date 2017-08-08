@@ -1,11 +1,3 @@
-export function updatePlaylist(playlist) {
-  let newPlaylist = [...playlist];
-
-  newPlaylist[0].remainingDuration = newPlaylist[0].remainingDuration - 1;
-
-  return newPlaylist;
-}
-
 export function createPlaylist(routine) {
   let playlist = [];
 
@@ -36,14 +28,16 @@ export function advancePlaylist(state) {
 
   if(playlist.length === 0) { return state; }
 
-  track.remainingDuration = track.remainingDuration - 1;
+  if(playlist[0].remainingDuration === 1) {
+    track.remainingDuration = track.duration;
 
-  if(playlist[0].remainingDuration === 0) {
     return {
       playlist: playlist.slice(1, playlist.length),
       completedPlaylist: [track, ...completedPlaylist],
     }
   } else {
+    track.remainingDuration = track.remainingDuration - 1;
+
     return {
       playlist: [track, ...playlist.slice(1, playlist.length)],
       completedPlaylist: completedPlaylist,
@@ -57,6 +51,11 @@ export function rewindPlaylist(state) {
   if(completedPlaylist.length === 0 &&
     playlist[0].remainingDuration === playlist[0].duration) {
     return {...state};
+  } else if (playlist.length === 0) {
+    return {
+      playlist: [completedPlaylist[0]],
+      completedPlaylist: [...completedPlaylist.slice(1, completedPlaylist.length)],
+    };
   } else if (playlist[0].remainingDuration !==  playlist[0].duration) {
     const track = playlist[0];
     track.remainingDuration = track.duration;
@@ -66,7 +65,7 @@ export function rewindPlaylist(state) {
       completedPlaylist: completedPlaylist,
     };
   } else if (playlist[0].remainingDuration === playlist[0].duration) {
-    const track = playlist[0];
+    const track = completedPlaylist[0];
 
     return {
       playlist: [track, ...playlist],

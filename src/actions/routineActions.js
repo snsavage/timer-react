@@ -31,8 +31,12 @@ export function clearCurrentRoutine() {
   return { type: 'CLEAR_CURRENT_ROUTINE' }
 }
 
-export function advanceCurrentRoutine() {
+export function advanceCurrentRoutine(playlist, timerId) {
   return { type: 'ADVANCE_TIMER' }
+}
+
+export function rewindCurrentRoutine() {
+  return { type: 'REWIND_TIMER' }
 }
 
 export function startCurrentRoutine() {
