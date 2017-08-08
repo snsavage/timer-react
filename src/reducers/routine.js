@@ -1,3 +1,10 @@
+import {
+  createPlaylist,
+  advancePlaylist,
+  rewindPlaylist,
+  updatePlaylist,
+} from './routineUtils';
+
 export function routineReducer(state = {
   loading: true,
   routine: {},
@@ -36,6 +43,7 @@ export function currentRoutineReducer(state = {
   loading: true,
   routine: {},
   playlist: [],
+  completedPlaylist: [],
 }, action) {
   switch(action.type) {
     case 'LOADING_CURRENT_ROUTINE':
@@ -63,38 +71,4 @@ export function currentRoutineReducer(state = {
     default:
       return state;
   }
-}
-
-function updatePlaylist(playlist) {
-  let newPlaylist = [...playlist];
-
-  newPlaylist[0].remainingDuration = newPlaylist[0].remainingDuration - 1;
-
-  return newPlaylist;
-}
-
-function createPlaylist(routine) {
-  let playlist = [];
-
-  for(let j = 0; j < routine.groups.length; j++) {
-    let group = routine.groups[j];
-
-    for(let times = 0; times < group.times; times++) {
-      for(let i = 0; i < group.intervals.length; i++) {
-        const interval = group.intervals[i];
-
-        playlist.push({
-          groupID: group.id,
-          groupNumber: times + 1,
-          name: interval.name,
-          duration: interval.duration,
-          remainingDuration: interval.duration,
-          nowPlaying: false,
-          played: false,
-        });
-      }
-    }
-  }
-
-  return playlist;
 }
