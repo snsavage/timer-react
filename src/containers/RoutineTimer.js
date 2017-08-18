@@ -4,13 +4,9 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import {
-  loadCurrentRoutine, clearCurrentRoutine, startCurrentRoutine, rewindCurrentRoutine,
+  clearCurrentRoutine, startCurrentRoutine, rewindCurrentRoutine,
 } from './../actions/routineActions';
 
-import RoutinesList from './../containers/RoutinesList';
-import { RoutineTimerListItem } from './../components/RoutineTimerListItem';
-import { RoutineDetail } from './../components/RoutineDetail';
-import { RoutineGroups } from './../components/RoutineGroups';
 import { displayTime } from './../utils/displayTime';
 import { remainingDuration } from './../utils/timer';
 
@@ -57,7 +53,7 @@ export class ComplexTimer extends Component {
 
   render() {
     const {
-      currentRoutine, loadCurrentRoutine, playlist, loading, completedPlaylist
+      currentRoutine, playlist, loading, completedPlaylist
     } = this.props;
 
     const playlistList = playlist.map((e, index) => {
@@ -124,7 +120,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadCurrentRoutine: bindActionCreators(loadCurrentRoutine, dispatch),
     clearCurrentRoutine: bindActionCreators(clearCurrentRoutine, dispatch),
     startCurrentRoutine: bindActionCreators(startCurrentRoutine, dispatch),
     rewindCurrentRoutine: bindActionCreators(rewindCurrentRoutine, dispatch),
