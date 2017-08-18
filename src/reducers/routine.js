@@ -38,9 +38,29 @@ export function routinesReducer(state = {
   }
 }
 
+const defaultRoutine = {
+  name: "",
+  description: "",
+  link: "",
+  public: false,
+  groups: [
+    {
+      order: 1,
+      times: 1,
+      intervals: [
+        {
+          name: "",
+          order: 1,
+          duration: 0,
+        },
+      ]
+    },
+  ]
+}
+
 export function currentRoutineReducer(state = {
   loading: true,
-  routine: {},
+  routine: defaultRoutine,
   playlist: [],
   completedPlaylist: [],
 }, action) {
@@ -59,7 +79,7 @@ export function currentRoutineReducer(state = {
 
     case 'CLEAR_CURRENT_ROUTINE':
       return Object.assign(
-        {}, state, { routine: {}, playlist: [], completedPlaylist: [] }
+        {}, state, { routine: defaultRoutine, playlist: [], completedPlaylist: [] }
       );
 
     case 'START_TIMER':

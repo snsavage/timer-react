@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import Timer from './Timer';
 import RoutinesExplore from './RoutinesExplore';
 import RoutineTimer from './RoutineTimer';
+import RoutineForm from './RoutineForm';
 import Register from './Register';
 import SignIn from './SignIn';
 import SignOut from './SignOut';
@@ -22,6 +23,7 @@ class App extends Component {
               <li><Link to="/">Basic Timer</Link></li>
               <li><Link to="/timer/routine">Routine Timer</Link></li>
               <li><Link to="/routines">Routines</Link></li>
+              <li><Link to="/routines/edit">Edit</Link></li>
               { this.props.loggedIn ? (
                 <div>
                   <li><Link to="/signout">Sign Out</Link></li>
@@ -40,7 +42,10 @@ class App extends Component {
               <Route path='/timer/routine/:routineId' component={RoutineTimer} />
               <Route path='/timer/routine' component={RoutineTimer} />
             </Switch>
-            <Route path='/routines' component={RoutinesExplore} />
+            <Switch>
+              <Route path='/routines/edit' component={RoutineForm} />
+              <Route path='/routines' component={RoutinesExplore} />
+            </Switch>
             <Route path='/register' component={Register} />
             <Route path='/signin' component={SignIn} />
             <Route path='/signout' component={SignOut} />

@@ -52,5 +52,9 @@ export function signInUser(credentials, history) {
 
 export function signOutUser() {
   sessionStorage.removeItem('jwt');
-  return { type: 'SIGN_OUT' };
+
+  return(dispatch) => {
+    dispatch({ type: 'CLEAR_CURRENT_ROUTINE' });
+    dispatch({ type: 'SIGN_OUT' });
+  }
 }

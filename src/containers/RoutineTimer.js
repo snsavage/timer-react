@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import {
-  clearCurrentRoutine, startCurrentRoutine, rewindCurrentRoutine,
+  loadCurrentRoutine,
+  clearCurrentRoutine,
+  startCurrentRoutine,
+  rewindCurrentRoutine,
 } from './../actions/routineActions';
 
 import { displayTime } from './../utils/displayTime';
@@ -123,6 +126,7 @@ const mapDispatchToProps = (dispatch) => {
     clearCurrentRoutine: bindActionCreators(clearCurrentRoutine, dispatch),
     startCurrentRoutine: bindActionCreators(startCurrentRoutine, dispatch),
     rewindCurrentRoutine: bindActionCreators(rewindCurrentRoutine, dispatch),
+    loadCurrentRoutine: bindActionCreators(loadCurrentRoutine, dispatch),
   };
 };
 
