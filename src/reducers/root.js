@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
-import { routineReducer, routinesReducer, currentRoutineReducer } from './routine';
+import { routineReducer, routinesReducer } from './routine';
+import { currentRoutineReducer } from './currentRoutine'
 import { sessionReducer } from './session';
 
 export default combineReducers({
