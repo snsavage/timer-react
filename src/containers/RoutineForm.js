@@ -21,18 +21,18 @@ export class RoutineForm extends Component {
           <TextField
             label="Name"
             name="routine.name"
-            defaultValue={this.props.routine.name}
-            onBlur={(ev) => actions.changeRoutine("name", ev.target.value)} />
+            value={this.props.routine.name}
+            onChange={(ev) => actions.changeRoutine("name", ev.target.value)} />
           <TextAreaField
             label="Description"
             name="routine.description"
-            defaultValue={this.props.routine.description}
-            onBlur={(ev) => actions.changeRoutine("description", ev.target.value)} />
+            value={this.props.routine.description}
+            onChange={(ev) => actions.changeRoutine("description", ev.target.value)} />
           <TextField
             label="Link"
             name="routine.link"
-            defaultValue={this.props.routine.link}
-            onBlur={(ev) => actions.changeRoutine("link", ev.target.value)} />
+            value={this.props.routine.link}
+            onChange={(ev) => actions.changeRoutine("link", ev.target.value)} />
           <SelectField
             label="Public"
             name="routine.public"
@@ -51,22 +51,27 @@ export class RoutineForm extends Component {
                   <NumberField
                     label="Times"
                     name={`routine.group[${groupIndex}]`}
-                    defaultValue={group.times}
-                    onBlur={(ev) =>
+                    value={group.times}
+                    onChange={(ev) =>
                       actions.changeGroup(
                         group.id, "times", parseInt(ev.target.value))} />
+                  <button onClick={(ev) => actions.removeGroup(ev, group.id)}>
+                    Remove Group
+                  </button>
+                  <button>Move Up</button>
+                  <button>Move Down</button>
                 </li>
                   { group.intervals.map((interval, intervalIndex) => {
                       return (
-                        <ul key={intervalIndex}>
+                        <ul key={intervalIndex} className={interval.id}>
                           <li>
                             <TextField
                               label="Name"
                               name={
                                 `routine.group[${groupIndex}].interval[${intervalIndex}].name`
                               }
-                              defaultValue={interval.name}
-                              onBlur={(ev) =>
+                              value={interval.name}
+                              onChange={(ev) =>
                                 actions.changeInterval(
                                   group.id, interval.id, "name", ev.target.value)} />
                           </li>
@@ -76,19 +81,36 @@ export class RoutineForm extends Component {
                               name={
                                 `routine.group[${groupIndex}].interval[${intervalIndex}].duration`
                               }
-                              defaultValue={interval.duration}
-                              onBlur={(ev) =>
+                              value={interval.duration}
+                              onChange={(ev) =>
                                 actions.changeInterval(
                                   group.id, interval.id, "duration", parseInt(ev.target.value))} />
+                          </li>
+                          <li>
+                            <button
+                              onClick={(ev) =>
+                                  actions.removeInterval(ev, group.id, interval.id)}>
+                              Remove Interval
+                            </button>
+                            <button>Move Up</button>
+                            <button>Move Down</button>
                           </li>
                         </ul>
                       )
                     })
                   }
+                  <li>
+                    <button onClick={(ev) => actions.addInterval(ev, group.id)}>
+                      Add Interval
+                    </button>
+                  </li>
               </ul>
               );
             })
           }
+          <button onClick={(ev) => actions.addGroup(ev)}>
+            Add Group
+          </button>
         </div>
         <input
           type="submit"

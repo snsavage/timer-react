@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TextAreaField = ({label, name, defaultValue, onBlur, index=0}) => {
+const TextAreaField = ({label, name, value, onChange, index=0}) => {
   const id = `${name.split(".").join("_")}_${index}`;
 
   return (
@@ -10,8 +10,8 @@ const TextAreaField = ({label, name, defaultValue, onBlur, index=0}) => {
       <textarea
         name={name}
         id={id}
-        defaultValue={defaultValue}
-        onBlur={onBlur}
+        value={value}
+        onChange={onChange}
         />
     </div>
   )
@@ -20,8 +20,8 @@ const TextAreaField = ({label, name, defaultValue, onBlur, index=0}) => {
 TextAreaField.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  defaultValue: PropTypes.string.isRequired,
-  onBlur: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 }
 
 export default TextAreaField;

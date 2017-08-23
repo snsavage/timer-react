@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const NumberField = ({label, name, defaultValue, onBlur, index=0, type="number"}) => {
+const NumberField = ({label, name,value, onChange, index=0, type="number"}) => {
   const id = `${name.split(".").join("_")}_${index}`;
 
   return (
@@ -11,8 +11,8 @@ const NumberField = ({label, name, defaultValue, onBlur, index=0, type="number"}
         type={type}
         name={name}
         id={id}
-        defaultValue={defaultValue}
-        onBlur={onBlur}
+        value={value}
+        onChange={onChange}
         step="1"
         min="1" />
     </div>
@@ -22,8 +22,8 @@ const NumberField = ({label, name, defaultValue, onBlur, index=0, type="number"}
 NumberField.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  defaultValue: PropTypes.number.isRequired,
-  onBlur: PropTypes.func.isRequired,
+  value: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
 }
 
 export default NumberField;

@@ -6,36 +6,93 @@ import {
   rewindPlaylist,
 } from './routineUtils';
 
-const defaultRoutine = {
-  id: uuidV4(),
-  name: "",
-  description: "",
-  link: "",
-  public: false,
-  groups: [
-    {
-      id: uuidV4(),
-      order: 1,
-      times: 1,
-      intervals: [
-        {
-          id: uuidV4(),
-          name: "",
-          order: 1,
-          duration: 0,
-        },
-      ]
-    },
-  ]
+function defaultRoutine(uuid) {
+  return {
+    id: uuid(),
+    name: "",
+    description: "",
+    link: "",
+    public: false,
+    groups: [
+      {
+        id: uuid(),
+        order: 1,
+        times: 1,
+        intervals: [
+          {
+            id: uuid(),
+            name: "",
+            order: 1,
+            duration: 0,
+          },
+        ]
+      },
+    ]
+  }
 }
 
 export function currentRoutineReducer(state = {
   loading: true,
-  routine: defaultRoutine,
+  routine: defaultRoutine(uuidV4),
   playlist: [],
   completedPlaylist: [],
 }, action) {
   switch(action.type) {
+    case 'ADD_CURRENT_ROUTINE_GROUP':
+      return Object.assign(
+        {}, state, {routine: Object.assign(
+          {}, state.routine, {
+            groups: [...state.routine.groups, ...defaultRoutine(uuidV4).groups]
+          }
+        )
+      });
+
+    case 'REMOVE_CURRENT_ROUTINE_GROUP':
+      const remainingGroups = state.routine.groups.filter((group) => {
+        return group.id !== action.groupId;
+      });
+
+      return Object.assign(
+        {}, state, { routine: Object.assign(
+          {}, state.routine, { groups: remainingGroups }
+        )
+      });
+
+    case 'ADD_CURRENT_ROUTINE_INTERVAL':
+      const groupsWithNewInterval = state.routine.groups.map((group) => {
+        if (group.id === action.groupId) {
+          const defaultInterval = defaultRoutine(uuidV4).groups[0].intervals[0];
+          const intervals = [...group.intervals, defaultInterval];
+
+          return Object.assign({}, group, { intervals: intervals });
+        } else {
+          return group
+        }
+      });
+
+      return  Object.assign(
+        {}, state, { routine: Object.assign(
+          {}, state.routine, { groups: groupsWithNewInterval }
+        )}
+      );
+
+    case 'REMOVE_CURRENT_ROUTINE_INTERVAL':
+      const groupsWithoutInterval = state.routine.groups.map((group) => {
+        if (group.id === action.groupId) {
+          const remainingIntervals = group.intervals.filter((interval) => {
+            return interval.id !== action.intervalId;
+          });
+
+          return Object.assign({}, group, { intervals: remainingIntervals });
+        } else {
+          return group;
+        }
+      });
+
+      const newRoutine = Object.assign({}, state.routine, { groups: groupsWithoutInterval });
+
+      return Object.assign({}, state, { routine: newRoutine });
+
     case 'CHANGE_CURRENT_ROUTINE':
       const routine = Object.assign(
         {}, state.routine, { [action.field]: action.value }
@@ -90,7 +147,7 @@ export function currentRoutineReducer(state = {
 
     case 'CLEAR_CURRENT_ROUTINE':
       return Object.assign(
-        {}, state, { routine: defaultRoutine, playlist: [], completedPlaylist: [] }
+        {}, state, { routine: defaultRoutine(uuidV4), playlist: [], completedPlaylist: [] }
       );
 
     case 'START_TIMER':
