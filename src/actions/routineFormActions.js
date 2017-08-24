@@ -56,3 +56,38 @@ export function removeInterval(ev, groupId, intervalId) {
     intervalId: intervalId,
   }
 }
+
+export function moveGroupUp(ev, groupId) {
+  ev.preventDefault();
+  return {
+    type: 'MOVE_GROUP_UP',
+    groupId: groupId,
+  }
+}
+
+
+export function moveGroupDown(ev, groupId) {
+  ev.preventDefault();
+  return {
+    type: 'MOVE_GROUP_DOWN',
+    groupId: groupId,
+  }
+}
+
+export function moveIntervalUp(ev, groupId, intervalId) {
+  ev.preventDefault();
+  return {
+    type: 'MOVE_INTERVAL_UP',
+    groupId: groupId,
+    intervalId: intervalId,
+  }
+}
+
+export function moveIntervalDown(ev, groupId, intervalId) {
+  ev.preventDefault();
+  return {
+    type: 'MOVE_INTERVAL_DOWN',
+    groupId: groupId,
+    intervalId: intervalId,
+  }
+}

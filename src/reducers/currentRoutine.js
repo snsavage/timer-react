@@ -6,7 +6,7 @@ import {
   rewindPlaylist,
 } from './routineUtils';
 
-function defaultRoutine(uuid) {
+function defaultRoutine(uuid, groupOrder = 1, intervalOrder = 1) {
   return {
     id: uuid(),
     name: "",
@@ -16,13 +16,13 @@ function defaultRoutine(uuid) {
     groups: [
       {
         id: uuid(),
-        order: 1,
+        order: groupOrder,
         times: 1,
         intervals: [
           {
             id: uuid(),
             name: "",
-            order: 1,
+            order: intervalOrder,
             duration: 0,
           },
         ]
@@ -38,11 +38,148 @@ export function currentRoutineReducer(state = {
   completedPlaylist: [],
 }, action) {
   switch(action.type) {
+    case 'MOVE_GROUP_UP':
+      return (function() {
+        let order = state.routine.groups.find(
+          (e) => e.id === action.groupId
+        ).order
+
+        function compareOrder(a, b) {
+          return a.order - b.order;
+        }
+
+        const groups = state.routine.groups.map((group, index) => {
+          if (order === 1) {
+            return group;
+          } else {
+            if (group.id === action.groupId) {
+              return Object.assign({}, group, { order: order - 1 });
+            } else if (group.order === order - 1) {
+              return Object.assign({}, group, { order: group.order + 1 });
+            } else {
+              return group;
+            }
+          }
+        }).sort(compareOrder);
+
+        return Object.assign(
+          {}, state, {routine: Object.assign({}, state.routine, {groups: groups})}
+        );
+      })(state, action);
+
+    case 'MOVE_INTERVAL_UP':
+      return (function() {
+        function compareOrder(a, b) {
+          return a.order - b.order;
+        }
+
+        const groups = state.routine.groups.map((group, index) => {
+          let order = group.intervals.find(
+            (e) => e.id === action.intervalId
+          ).order
+
+          if (group.id === action.groupId) {
+            const intervals = group.intervals.map((interval) => {
+              if (order === 1) {
+                return interval;
+              } else {
+                if (interval.id === action.intervalId) {
+                  return Object.assign({}, interval, { order: order - 1});
+                } else if (interval.order === order -1) {
+                  return Object.assign({}, interval, { order: interval.order + 1});
+                } else {
+                  return interval;
+                }
+              }
+            }).sort(compareOrder);
+
+            return Object.assign({}, group, { intervals: intervals });
+          } else {
+            return group
+          }
+        })
+
+        return Object.assign(
+          {}, state, {routine: Object.assign({}, state.routine, {groups: groups})}
+        );
+      })(state, action);
+
+
+    case 'MOVE_GROUP_DOWN':
+      return (function() {
+        let order = state.routine.groups.find(
+          (e) => e.id === action.groupId
+        ).order
+
+        function compareOrder(a, b) {
+          return a.order - b.order;
+        }
+
+        const groups = state.routine.groups.map((group, index) => {
+          if (order === state.routine.groups.length) {
+            return group;
+          } else {
+            if (group.id === action.groupId) {
+              return Object.assign({}, group, { order: order + 1 });
+            } else if (group.order === order + 1) {
+              return Object.assign({}, group, { order: group.order - 1 });
+            } else {
+              return group;
+            }
+          }
+        }).sort(compareOrder);
+
+        return Object.assign(
+          {}, state, {routine: Object.assign({}, state.routine, {groups: groups})}
+        );
+      })(state, action);
+
+    case 'MOVE_INTERVAL_DOWN':
+      return (function() {
+        function compareOrder(a, b) {
+          return a.order - b.order;
+        }
+
+        const groups = state.routine.groups.map((group, index) => {
+          let order = group.intervals.find(
+            (e) => e.id === action.intervalId
+          ).order
+
+          if (group.id === action.groupId) {
+            const intervals = group.intervals.map((interval) => {
+              if (order === group.intervals.length) {
+                return interval;
+              } else {
+                if (interval.id === action.intervalId) {
+                  return Object.assign({}, interval, { order: order + 1});
+                } else if (interval.order === order + 1) {
+                  return Object.assign({}, interval, { order: interval.order - 1});
+                } else {
+                  return interval;
+                }
+              }
+            }).sort(compareOrder);
+
+            return Object.assign({}, group, { intervals: intervals });
+          } else {
+            return group
+          }
+        })
+
+        return Object.assign(
+          {}, state, {routine: Object.assign({}, state.routine, {groups: groups})}
+        );
+      })(state, action);
+      return state;
+
     case 'ADD_CURRENT_ROUTINE_GROUP':
       return Object.assign(
         {}, state, {routine: Object.assign(
           {}, state.routine, {
-            groups: [...state.routine.groups, ...defaultRoutine(uuidV4).groups]
+            groups: [
+              ...state.routine.groups,
+              ...defaultRoutine(uuidV4, state.routine.groups.length + 1).groups
+            ]
           }
         )
       });
@@ -50,7 +187,7 @@ export function currentRoutineReducer(state = {
     case 'REMOVE_CURRENT_ROUTINE_GROUP':
       const remainingGroups = state.routine.groups.filter((group) => {
         return group.id !== action.groupId;
-      });
+      }).map((group, index) => Object.assign(group, {order: index + 1}));
 
       return Object.assign(
         {}, state, { routine: Object.assign(
@@ -62,7 +199,10 @@ export function currentRoutineReducer(state = {
       const groupsWithNewInterval = state.routine.groups.map((group) => {
         if (group.id === action.groupId) {
           const defaultInterval = defaultRoutine(uuidV4).groups[0].intervals[0];
-          const intervals = [...group.intervals, defaultInterval];
+          const intervals = [
+            ...group.intervals,
+            {...defaultInterval, order: group.intervals.length + 1}
+          ];
 
           return Object.assign({}, group, { intervals: intervals });
         } else {
@@ -81,7 +221,7 @@ export function currentRoutineReducer(state = {
         if (group.id === action.groupId) {
           const remainingIntervals = group.intervals.filter((interval) => {
             return interval.id !== action.intervalId;
-          });
+          }).map((interval, index) => Object.assign(interval, {order: index + 1}));
 
           return Object.assign({}, group, { intervals: remainingIntervals });
         } else {

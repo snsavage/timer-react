@@ -58,8 +58,12 @@ export class RoutineForm extends Component {
                   <button onClick={(ev) => actions.removeGroup(ev, group.id)}>
                     Remove Group
                   </button>
-                  <button>Move Up</button>
-                  <button>Move Down</button>
+                  <button onClick={(ev) => actions.moveGroupUp(ev, group.id)}>
+                    Move Up
+                  </button>
+                  <button onClick={(ev) => actions.moveGroupDown(ev, group.id)}>
+                    Move Down
+                  </button>
                 </li>
                   { group.intervals.map((interval, intervalIndex) => {
                       return (
@@ -92,8 +96,16 @@ export class RoutineForm extends Component {
                                   actions.removeInterval(ev, group.id, interval.id)}>
                               Remove Interval
                             </button>
-                            <button>Move Up</button>
-                            <button>Move Down</button>
+                            <button
+                              onClick={(ev) =>
+                                  actions.moveIntervalUp(ev, group.id, interval.id)}>
+                              Move Up
+                            </button>
+                            <button
+                              onClick={(ev) =>
+                                  actions.moveIntervalDown(ev, group.id, interval.id)}>
+                              Move Down
+                            </button>
                           </li>
                         </ul>
                       )
