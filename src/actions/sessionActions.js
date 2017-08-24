@@ -19,7 +19,7 @@ export function signUpUser(register, history) {
     return fetch('api/v1/register', options)
       .then(response => response.json())
       .then(token => {
-        sessionStorage.setItem('jwt', token.jwt);
+        localStorage.setItem('jwt', token.jwt);
         history.push("/");
         dispatch({ type: 'SIGN_UP_SUCCESS' });
       });
@@ -43,7 +43,7 @@ export function signInUser(credentials, history) {
     return fetch('api/v1/signin', options)
       .then(response => response.json())
       .then(token => {
-        sessionStorage.setItem('jwt', token.jwt);
+        localStorage.setItem('jwt', token.jwt);
         history.push("/");
         dispatch({ type: 'SIGN_IN_SUCCESS' });
       });
@@ -51,7 +51,7 @@ export function signInUser(credentials, history) {
 }
 
 export function signOutUser() {
-  sessionStorage.removeItem('jwt');
+  localStorage.removeItem('jwt');
 
   return(dispatch) => {
     dispatch({ type: 'CLEAR_CURRENT_ROUTINE' });
