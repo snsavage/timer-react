@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import { requestOptions } from '../utils/session';
-import { handleErrors } from '../utils/api';
-import omit from 'lodash.omit';
+import { handleErrors, processRoutineForApi } from '../utils/api';
 
 export function changeRoutine(field, value) {
   return {
@@ -98,21 +97,7 @@ export function moveIntervalDown(ev, groupId, intervalId) {
 }
 
 export function createRoutine(routine, history) {
-  function processRoutine(routine) {
-    const groups = routine.groups.map((group) => {
-      return omit(
-        Object.assign({}, group, { intervals_attributes: group.intervals }),
-        ['intervals']
-      );
-    });
-
-    return omit(
-      Object.assign({}, routine, { groups_attributes: groups }),
-      ['groups']
-    );
-  }
-
-  const routineAttributes = processRoutine(routine);
+  const routineAttributes = processRoutineForApi(routine);
 
   return(dispatch) => {
     const options = requestOptions({
