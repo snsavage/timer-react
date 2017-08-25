@@ -1,10 +1,11 @@
 import fetch from 'isomorphic-fetch'
+import { requestOptions } from '../utils/session';
 
 export function fetchRoutines() {
   return(dispatch) => {
     dispatch({ type: 'LOADING_ROUTINES' });
 
-    return fetch('/api/v1/routines')
+    return fetch('/api/v1/routines', requestOptions())
       .then(response => response.json())
       .then(routines => dispatch({
         type: 'FETCH_ROUTINES',
@@ -18,7 +19,7 @@ export function loadCurrentRoutine(id) {
   return(dispatch) => {
     dispatch({ type: 'LOADING_CURRENT_ROUTINE' });
 
-    return fetch(`/api/v1/routines/${id}`)
+    return fetch(`/api/v1/routines/${id}`, requestOptions())
       .then(response => response.json())
       .then(routine => dispatch({
         type: 'FETCH_CURRENT_ROUTINE',
@@ -52,7 +53,7 @@ export function fetchRoutine(id) {
   return(dispatch) => {
     dispatch({ type: 'LOADING_ROUTINE' });
 
-    return fetch(`/api/v1/routines/${id}`)
+    return fetch(`/api/v1/routines/${id}`, requestOptions())
       .then(response => response.json())
       .then(routine => dispatch({
         type: 'FETCH_ROUTINE',

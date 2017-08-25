@@ -33,11 +33,32 @@ function defaultRoutine(uuid, groupOrder = 1, intervalOrder = 1) {
 
 export function currentRoutineReducer(state = {
   loading: true,
+  saved: true,
+  error: "",
   routine: defaultRoutine(uuidV4),
   playlist: [],
   completedPlaylist: [],
 }, action) {
   switch(action.type) {
+    case 'SUCCESSFULLY_CREATED_ROUTINE':
+      return Object.assign({}, state, {
+        loading: false, saved: true, currentRoutine: action.payload
+      });
+
+    case 'UNSUCCESSFULLY_CREATED_ROUTINE':
+      return Object.assign({}, state, {
+        loading: false, saved: false, error: action.payload
+      });
+
+    case 'CREATING_ROUTINE':
+      return Object.assign({}, state, { loading: true });
+
+    case 'MARK_ROUTINE_AS_NOT_SAVED':
+      return Object.assign({}, state, { saved: false });
+
+    case 'MARK_ROUTINE_AS_SAVED':
+      return Object.assign({}, state, { saved: true });
+
     case 'MOVE_GROUP_UP':
       return (function() {
         let order = state.routine.groups.find(

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
+import { withRouter } from 'react-router';
 
 import TextField from '../components/TextField';
 import NumberField from '../components/NumberField';
@@ -11,12 +12,30 @@ import * as actions from '../actions/routineFormActions';
 import { displayTime } from './../utils/displayTime';
 
 export class RoutineForm extends Component {
+  onFormChange = () => {
+    if (this.props.saved) {
+      this.props.actions.markAsNotSaved();
+    }
+  }
+
+  onFormSubmit = (ev) => {
+    const { actions, routine, history } = this.props;
+    ev.preventDefault();
+
+    actions.createRoutine(routine, history)
+  }
+
   render() {
-    const { actions } = this.props;
+    const { actions, error } = this.props;
 
     return (
-      <form>
+      <form
+        onChange={() => this.onFormChange()}
+        onSubmit={(ev) => this.onFormSubmit(ev)}>
         <h1>Routine Form</h1>
+        { error.length > 1 &&
+          <div>{this.props.error}</div>
+        }
         <div>
           <TextField
             label="Name"
@@ -124,9 +143,13 @@ export class RoutineForm extends Component {
             Add Group
           </button>
         </div>
-        <input
-          type="submit"
-          value="Save" />
+        <div>
+          { this.props.saved ? (
+            <h1>The routine is currently saved!</h1>
+          ) : (
+            <input type="submit" value="Save" />
+          )}
+        </div>
       </form>
     );
   }
@@ -135,6 +158,8 @@ export class RoutineForm extends Component {
 function mapStateToProps(state) {
   return {
     routine: state.currentRoutine.routine,
+    saved: state.currentRoutine.saved,
+    error: state.currentRoutine.error,
   }
 }
 
@@ -143,4 +168,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoutineForm);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RoutineForm));

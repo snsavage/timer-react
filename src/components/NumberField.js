@@ -14,7 +14,7 @@ const NumberField = ({label, name,value, onChange, index=0, type="number"}) => {
         value={value}
         onChange={onChange}
         step="1"
-        min="1" />
+        min="0" />
     </div>
   )
 };

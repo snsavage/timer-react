@@ -1,3 +1,8 @@
+import fetch from 'isomorphic-fetch'
+import { requestOptions } from '../utils/session';
+import { handleErrors } from '../utils/api';
+import omit from 'lodash.omit';
+
 export function changeRoutine(field, value) {
   return {
     type: 'CHANGE_CURRENT_ROUTINE',
@@ -90,4 +95,59 @@ export function moveIntervalDown(ev, groupId, intervalId) {
     groupId: groupId,
     intervalId: intervalId,
   }
+}
+
+export function createRoutine(routine, history) {
+  function processRoutine(routine) {
+    const groups = routine.groups.map((group) => {
+      return omit(
+        Object.assign({}, group, { intervals_attributes: group.intervals }),
+        ['intervals']
+      );
+    });
+
+    return omit(
+      Object.assign({}, routine, { groups_attributes: groups }),
+      ['groups']
+    );
+  }
+
+  const routineAttributes = processRoutine(routine);
+
+  return(dispatch) => {
+    const options = requestOptions({
+      method: 'POST',
+      body: JSON.stringify({
+        routine: routineAttributes,
+      }),
+    });
+
+    dispatch({ type: 'CREATING_ROUTINE' });
+
+    return fetch('/api/v1/routines', options)
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(routines => {
+        dispatch({
+          type: 'SUCCESSFULLY_CREATED_ROUTINE',
+          payload: routines.routine,
+        })
+        return routines;
+      })
+      .then(routines => history.push(`/routines/${routines.routine.id}`))
+      .catch((error) => {
+        dispatch({
+          type: 'UNSUCCESSFULLY_CREATED_ROUTINE',
+          payload: "Your routine could not be saved!",
+        })
+      });
+  }
+}
+
+export function markAsNotSaved() {
+  return { type: 'MARK_ROUTINE_AS_NOT_SAVED' }
+}
+
+export function markAsSaved() {
+  return { type: 'MARK_ROUTINE_AS_SAVED' }
 }
