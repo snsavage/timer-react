@@ -30,45 +30,58 @@ export function changeInterval(groupId, intervalId, field, value) {
 }
 
 export function addGroup() {
-  return {
-    type: 'ADD_CURRENT_ROUTINE_GROUP',
+  return(dispatch) => {
+    dispatch({ type: 'ADD_CURRENT_ROUTINE_GROUP' });
+    dispatch({ type: 'MARK_ROUTINE_AS_NOT_SAVED' });
   }
 }
 
 export function removeGroup(args) {
   const { groupId } = args;
 
-  return {
-    type: 'REMOVE_CURRENT_ROUTINE_GROUP',
-    groupId: groupId,
+  return(dispatch) => {
+    dispatch({
+      type: 'REMOVE_CURRENT_ROUTINE_GROUP',
+      groupId: groupId,
+    });
+    dispatch({ type: 'MARK_ROUTINE_AS_NOT_SAVED' });
   }
 }
 
 export function addInterval(args) {
   const { groupId } = args;
 
-  return {
-    type: 'ADD_CURRENT_ROUTINE_INTERVAL',
-    groupId: groupId,
+  return(dispatch) => {
+    dispatch({
+      type: 'ADD_CURRENT_ROUTINE_INTERVAL',
+      groupId: groupId,
+    });
+    dispatch({ type: 'MARK_ROUTINE_AS_NOT_SAVED' });
   }
 }
 
 export function removeInterval(args) {
   const { groupId, intervalId } = args;
 
-  return {
-    type: 'REMOVE_CURRENT_ROUTINE_INTERVAL',
-    groupId: groupId,
-    intervalId: intervalId,
+  return(dispatch) => {
+    dispatch({
+      type: 'REMOVE_CURRENT_ROUTINE_INTERVAL',
+      groupId: groupId,
+      intervalId: intervalId,
+    });
+    dispatch({ type: 'MARK_ROUTINE_AS_NOT_SAVED' });
   }
 }
 
 export function moveGroupUp(args) {
   const { groupId } = args;
 
-  return {
-    type: 'MOVE_GROUP_UP',
-    groupId: groupId,
+  return(dispatch) => {
+    dispatch({
+      type: 'MOVE_GROUP_UP',
+      groupId: groupId,
+    });
+    dispatch({ type: 'MARK_ROUTINE_AS_NOT_SAVED' });
   }
 }
 
@@ -76,29 +89,38 @@ export function moveGroupUp(args) {
 export function moveGroupDown(args) {
   const { groupId } = args;
 
-  return {
-    type: 'MOVE_GROUP_DOWN',
-    groupId: groupId,
+  return(dispatch) => {
+    dispatch({
+      type: 'MOVE_GROUP_DOWN',
+      groupId: groupId,
+    });
+    dispatch({ type: 'MARK_ROUTINE_AS_NOT_SAVED' });
   }
 }
 
 export function moveIntervalUp(args) {
   const { groupId, intervalId } = args;
 
-  return {
-    type: 'MOVE_INTERVAL_UP',
-    groupId: groupId,
-    intervalId: intervalId,
+  return(dispatch) => {
+    dispatch({
+      type: 'MOVE_INTERVAL_UP',
+      groupId: groupId,
+      intervalId: intervalId,
+    });
+    dispatch({ type: 'MARK_ROUTINE_AS_NOT_SAVED' });
   }
 }
 
 export function moveIntervalDown(args) {
   const { groupId, intervalId } = args;
 
-  return {
-    type: 'MOVE_INTERVAL_DOWN',
-    groupId: groupId,
-    intervalId: intervalId,
+  return(dispatch) => {
+    dispatch({
+      type: 'MOVE_INTERVAL_DOWN',
+      groupId: groupId,
+      intervalId: intervalId,
+    });
+    dispatch({ type: 'MARK_ROUTINE_AS_NOT_SAVED' });
   }
 }
 
