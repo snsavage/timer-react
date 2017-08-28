@@ -83,13 +83,12 @@ export function moveGroupDown(args) {
 }
 
 export function moveIntervalUp(args) {
-  const { groupId, intervalId, order } = args;
+  const { groupId, intervalId } = args;
 
   return {
     type: 'MOVE_INTERVAL_UP',
     groupId: groupId,
     intervalId: intervalId,
-    order: order,
   }
 }
 
