@@ -6,7 +6,8 @@ import { withRouter } from 'react-router-dom';
 import Timer from './Timer';
 import RoutinesExplore from './RoutinesExplore';
 import RoutineTimer from './RoutineTimer';
-import RoutineForm from './RoutineForm';
+import NewRoutineForm from './NewRoutineForm';
+import EditRoutineForm from './EditRoutineForm';
 import Register from './Register';
 import SignIn from './SignIn';
 import SignOut from './SignOut';
@@ -43,7 +44,10 @@ class App extends Component {
               <Route path='/timer/routine' component={RoutineTimer} />
             </Switch>
             <Switch>
-              <Route path='/routines/new' component={RoutineForm} />
+              <Route
+                path='/routines/:routineId/edit'
+                component={EditRoutineForm} />
+              <Route path='/routines/new' component={NewRoutineForm} />
               <Route path='/routines' component={RoutinesExplore} />
             </Switch>
             <Route path='/register' component={Register} />

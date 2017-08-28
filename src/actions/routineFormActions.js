@@ -151,6 +151,39 @@ export function createRoutine(routine, history) {
       .catch((error) => {
         dispatch({
           type: 'UNSUCCESSFULLY_CREATED_ROUTINE',
+          payload: "Your routine could not be created!",
+        })
+      });
+  }
+}
+
+export function updateRoutine(routine, history) {
+  const routineAttributes = processRoutineForApi(routine);
+
+  return(dispatch) => {
+    const options = requestOptions({
+      method: 'PATCH',
+      body: JSON.stringify({
+        routine: routineAttributes,
+      }),
+    });
+
+    dispatch({ type: 'UPDATING_ROUTINE' });
+
+    return fetch(`/api/v1/routines/${routine.id}`, options)
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(routines => {
+        dispatch({
+          type: 'SUCCESSFULLY_UPDATED_ROUTINE',
+          payload: routines.routine,
+        })
+        return routines;
+      })
+      .then(routines => history.push(`/routines/${routines.routine.id}`))
+      .catch((error) => {
+        dispatch({
+          type: 'UNSUCCESSFULLY_UPDATED_ROUTINE',
           payload: "Your routine could not be saved!",
         })
       });

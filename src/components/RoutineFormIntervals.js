@@ -66,5 +66,5 @@ RoutineFormIntervals.propTypes = {
   actions: PropTypes.object.isRequired,
   intervals: PropTypes.array.isRequired,
   groupIndex: PropTypes.number.isRequired,
-  groupId: PropTypes.string.isRequired,
+  groupId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 }

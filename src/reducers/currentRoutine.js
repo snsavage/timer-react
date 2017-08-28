@@ -55,6 +55,20 @@ export function currentRoutineReducer(state = {
     case 'CREATING_ROUTINE':
       return Object.assign({}, state, { loading: true });
 
+    case 'SUCCESSFULLY_UPDATED_ROUTINE':
+      return Object.assign({}, state, {
+        loading: false, saved: true, currentRoutine: action.payload
+      });
+
+    case 'UNSUCCESSFULLY_UPDATED_ROUTINE':
+      return Object.assign({}, state, {
+        loading: false, saved: false, error: action.payload
+      });
+
+
+    case 'UPDATING_ROUTINE':
+      return Object.assign({}, state, { loading: true });
+
     case 'MARK_ROUTINE_AS_NOT_SAVED':
       return Object.assign({}, state, { saved: false });
 

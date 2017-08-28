@@ -29,6 +29,9 @@ class RoutinesShow extends Component {
           <div>
             <RoutineDetail routine={routine} />
             <Link to={"/timer/routine/" + routine.id.toString()}>Play</Link>
+            <Link to={"/routines/" + routine.id.toString() + "/edit"}>
+              Edit
+            </Link>
             <RoutineGroups groups={routine.groups} />
           </div>
         )}

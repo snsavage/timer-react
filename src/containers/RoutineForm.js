@@ -2,61 +2,86 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router';
+import { PropTypes } from 'prop-types';
 
 import RoutineFormRoutineDetails from '../components/RoutineFormRoutineDetails';
 import RoutineFormGroups from '../components/RoutineFormGroups';
 
 import * as actions from '../actions/routineFormActions';
+import { loadCurrentRoutine } from '../actions/routineActions';
 
 export class RoutineForm extends Component {
+  componentWillMount() {
+    const { routineId, loadCurrentRoutine } = this.props;
+
+    if(routineId) {
+      loadCurrentRoutine(routineId);
+    }
+  }
+
   onFormChange = () => {
-    if (this.props.saved) {
-      this.props.actions.markAsNotSaved();
+    const { saved, actions } = this.props;
+
+    if (saved) {
+      actions.markAsNotSaved();
     }
   }
 
   onFormSubmit = (ev) => {
-    const { actions, routine, history } = this.props;
+    const { onSubmit, routine, history } = this.props;
     ev.preventDefault();
 
-    actions.createRoutine(routine, history)
+    onSubmit(routine, history)
   }
 
   render() {
-    const { actions, error, routine } = this.props;
+    const { actions, error, routine, submitValue, formTitle } = this.props;
+    const errors = error.length > 1 ? error : "";
 
     return (
       <form
         onChange={() => this.onFormChange()}
         onSubmit={(ev) => this.onFormSubmit(ev)}>
-        <h1>Routine Form</h1>
-        { error.length > 1 &&
-          <div>{this.props.error}</div>
-        }
+        <h1>{formTitle}</h1>
+        <div>{errors}</div>
         <RoutineFormRoutineDetails actions={actions} routine={routine} />
         <RoutineFormGroups actions={actions} groups={routine.groups} />
         <div>
-          { this.props.saved ? (
-            <h1>The routine is currently saved!</h1>
-          ) : (
-            <input type="submit" value="Save" />
-          )}
+          <input
+            type="submit"
+            value={submitValue}
+            disabled={this.props.saved} />
         </div>
       </form>
     );
   }
 }
 
-function mapStateToProps(state) {
+RoutineForm.propTypes = {
+  routine: PropTypes.object.isRequired,
+  saved: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  routineId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onSubmit: PropTypes.func.isRequired,
+  submitValue: PropTypes.string.isRequired,
+  formTitle: PropTypes.string.isRequired,
+}
+
+function mapStateToProps(state, ownProps) {
   return {
     routine: state.currentRoutine.routine,
     saved: state.currentRoutine.saved,
     error: state.currentRoutine.error,
+    routineId: ownProps.match.params.routineId,
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators(actions, dispatch) };
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    actions: bindActionCreators(actions, dispatch),
+    loadCurrentRoutine: bindActionCreators(loadCurrentRoutine, dispatch),
+    onSubmit: bindActionCreators(ownProps.onSubmit, dispatch),
+  };
 }
 
 
