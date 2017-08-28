@@ -7,6 +7,7 @@ import TextField from '../components/TextField';
 import NumberField from '../components/NumberField';
 import TextAreaField from '../components/TextAreaField';
 import SelectField from '../components/SelectField';
+import Button from '../components/Button';
 
 import * as actions from '../actions/routineFormActions';
 import { displayTime } from './../utils/displayTime';
@@ -74,15 +75,18 @@ export class RoutineForm extends Component {
                     onChange={(ev) =>
                       actions.changeGroup(
                         group.id, "times", parseInt(ev.target.value))} />
-                  <button onClick={(ev) => actions.removeGroup(ev, group.id)}>
-                    Remove Group
-                  </button>
-                  <button onClick={(ev) => actions.moveGroupUp(ev, group.id)}>
-                    Move Up
-                  </button>
-                  <button onClick={(ev) => actions.moveGroupDown(ev, group.id)}>
-                    Move Down
-                  </button>
+                  <Button
+                    label="Remove Group"
+                    onClick={actions.removeGroup}
+                    groupId={group.id} />
+                  <Button
+                    label="Move Up"
+                    onClick={actions.moveGroupUp}
+                    groupId={group.id} />
+                  <Button
+                    label="Move Down"
+                    onClick={actions.moveGroupDown}
+                    groupId={group.id} />
                 </li>
                   { group.intervals.map((interval, intervalIndex) => {
                       return (
@@ -110,38 +114,40 @@ export class RoutineForm extends Component {
                                   group.id, interval.id, "duration", parseInt(ev.target.value))} />
                           </li>
                           <li>
-                            <button
-                              onClick={(ev) =>
-                                  actions.removeInterval(ev, group.id, interval.id)}>
-                              Remove Interval
-                            </button>
-                            <button
-                              onClick={(ev) =>
-                                  actions.moveIntervalUp(ev, group.id, interval.id)}>
-                              Move Up
-                            </button>
-                            <button
-                              onClick={(ev) =>
-                                  actions.moveIntervalDown(ev, group.id, interval.id)}>
-                              Move Down
-                            </button>
+                            <Button
+                              label="Remove Interval"
+                              onClick={actions.removeInterval}
+                              groupId={group.id}
+                              intervalId={interval.id} />
+                            <Button
+                              label="Move Up"
+                              onClick={actions.moveIntervalUp}
+                              groupId={group.id}
+                              intervalId={interval.id}
+                              order={interval.order} />
+                            <Button
+                              label="Move Down"
+                              onClick={actions.moveIntervalDown}
+                              groupId={group.id}
+                              intervalId={interval.id} />
                           </li>
                         </ul>
                       )
                     })
                   }
                   <li>
-                    <button onClick={(ev) => actions.addInterval(ev, group.id)}>
-                      Add Interval
-                    </button>
+                    <Button
+                      label="Add Interval"
+                      onClick={actions.addInterval}
+                      groupId={group.id} />
                   </li>
               </ul>
               );
             })
           }
-          <button onClick={(ev) => actions.addGroup(ev)}>
-            Add Group
-          </button>
+          <Button
+            label="Add Group"
+            onClick={actions.addGroup} />
         </div>
         <div>
           { this.props.saved ? (
