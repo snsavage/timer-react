@@ -23,7 +23,7 @@ class App extends Component {
               <li><Link to="/">Basic Timer</Link></li>
               <li><Link to="/timer/routine">Routine Timer</Link></li>
               <li><Link to="/routines">Routines</Link></li>
-              <li><Link to="/routines/edit">Edit</Link></li>
+              <li><Link to="/routines/new">New Routine</Link></li>
               { this.props.loggedIn ? (
                 <div>
                   <li><Link to="/signout">Sign Out</Link></li>
@@ -43,7 +43,7 @@ class App extends Component {
               <Route path='/timer/routine' component={RoutineTimer} />
             </Switch>
             <Switch>
-              <Route path='/routines/edit' component={RoutineForm} />
+              <Route path='/routines/new' component={RoutineForm} />
               <Route path='/routines' component={RoutinesExplore} />
             </Switch>
             <Route path='/register' component={Register} />
