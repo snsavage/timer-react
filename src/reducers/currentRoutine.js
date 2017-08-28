@@ -1,5 +1,7 @@
 import uuidV4 from 'uuid/v4';
 
+import { compareOrder } from './routineUtils';
+
 import {
   createPlaylist,
   advancePlaylist,
@@ -65,10 +67,6 @@ export function currentRoutineReducer(state = {
           (e) => e.id === action.groupId
         ).order
 
-        function compareOrder(a, b) {
-          return a.order - b.order;
-        }
-
         const groups = state.routine.groups.map((group, index) => {
           if (order === 1) {
             return group;
@@ -90,16 +88,11 @@ export function currentRoutineReducer(state = {
 
     case 'MOVE_INTERVAL_UP':
       return (function() {
-        function compareOrder(a, b) {
-          return a.order - b.order;
-        }
-
         const groups = state.routine.groups.map((group, index) => {
-          let order = group.intervals.find(
-            (e) => e.id === action.intervalId
-          ).order
-
           if (group.id === action.groupId) {
+            let order = group.intervals.find((e) => e.id === action.intervalId
+            ).order;
+
             const intervals = group.intervals.map((interval) => {
               if (order === 1) {
                 return interval;
@@ -132,10 +125,6 @@ export function currentRoutineReducer(state = {
           (e) => e.id === action.groupId
         ).order
 
-        function compareOrder(a, b) {
-          return a.order - b.order;
-        }
-
         const groups = state.routine.groups.map((group, index) => {
           if (order === state.routine.groups.length) {
             return group;
@@ -157,16 +146,12 @@ export function currentRoutineReducer(state = {
 
     case 'MOVE_INTERVAL_DOWN':
       return (function() {
-        function compareOrder(a, b) {
-          return a.order - b.order;
-        }
-
         const groups = state.routine.groups.map((group, index) => {
-          let order = group.intervals.find(
-            (e) => e.id === action.intervalId
-          ).order
-
           if (group.id === action.groupId) {
+            let order = group.intervals.find(
+              (e) => e.id === action.intervalId
+            ).order
+
             const intervals = group.intervals.map((interval) => {
               if (order === group.intervals.length) {
                 return interval;

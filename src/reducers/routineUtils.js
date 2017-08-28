@@ -74,3 +74,6 @@ export function rewindPlaylist(state) {
   }
 }
 
+export function compareOrder(a, b) {
+  return a.order - b.order;
+}
