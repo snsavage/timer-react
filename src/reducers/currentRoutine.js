@@ -307,7 +307,12 @@ export function currentRoutineReducer(state = {
 
     case 'CLEAR_CURRENT_ROUTINE':
       return Object.assign(
-        {}, state, { routine: defaultRoutine(uuidV4), playlist: [], completedPlaylist: [] }
+        {}, state, {
+          routine: defaultRoutine(uuidV4),
+          playlist: [],
+          completedPlaylist: [],
+          saved: true
+        }
       );
 
     case 'START_TIMER':
