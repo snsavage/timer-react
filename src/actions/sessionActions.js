@@ -79,7 +79,9 @@ export function signOutUser() {
 }
 
 export function loadUserTraits() {
-  return {
-    type: 'LOAD_USER_TRAITS',
+  if (localStorage.user) {
+    return { type: 'LOAD_USER_TRAITS' };
+  } else {
+    return { type: 'NO_USER_TRAITS_FOUND' };
   }
 }
