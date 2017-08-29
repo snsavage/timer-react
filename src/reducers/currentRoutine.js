@@ -190,7 +190,6 @@ export function currentRoutineReducer(state = {
           {}, state, {routine: Object.assign({}, state.routine, {groups: groups})}
         );
       })(state, action);
-      return state;
 
     case 'ADD_CURRENT_ROUTINE_GROUP':
       return Object.assign(
