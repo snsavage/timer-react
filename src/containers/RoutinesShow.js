@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { fetchRoutine } from './../actions/routineActions';
 import { RoutineDetail } from './../components/RoutineDetail';
 import { RoutineGroups } from './../components/RoutineGroups';
+import AuthorizedLink from '../containers/AuthorizedLink';
 
 class RoutinesShow extends Component {
   componentWillMount() {
@@ -20,6 +21,7 @@ class RoutinesShow extends Component {
 
   render() {
     const { routine, loading } = this.props.routine;
+    const { user } = this.props;
 
     return (
       <div className="routine">
@@ -29,9 +31,12 @@ class RoutinesShow extends Component {
           <div>
             <RoutineDetail routine={routine} />
             <Link to={"/timer/routine/" + routine.id.toString()}>Play</Link>
-            <Link to={"/routines/" + routine.id.toString() + "/edit"}>
+            <AuthorizedLink
+              resource={routine}
+              user={user}
+              to={`/routines/${routine.id}/edit`}>
               Edit
-            </Link>
+            </AuthorizedLink>
             <RoutineGroups groups={routine.groups} />
           </div>
         )}
@@ -43,6 +48,7 @@ class RoutinesShow extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     routine: state.routine,
+    user: state.session.user,
     routineId: ownProps.match.params.routineId,
   }
 }
