@@ -10,7 +10,10 @@ class PrivateRoute extends Component {
         loggedIn ? (
           React.createElement(component, props)
         ) : (
-          <Redirect to={{ pathname: '/signin' }} />
+          <Redirect to={{
+            pathname: '/signin',
+            state: { from: props.location },
+          }} />
         )
       )} />
     );

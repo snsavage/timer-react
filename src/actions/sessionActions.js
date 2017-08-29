@@ -26,9 +26,8 @@ export function signUpUser(register, history) {
   }
 }
 
-export function signInUser(credentials, history) {
+export function signInUser(credentials, history, redirect = "/") {
   return(dispatch) => {
-
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -44,9 +43,8 @@ export function signInUser(credentials, history) {
       .then(response => response.json())
       .then(token => {
         localStorage.setItem('jwt', token.jwt);
-        history.push("/");
-        dispatch({ type: 'SIGN_IN_SUCCESS' });
-      });
+        dispatch({ type: 'SIGN_IN_SUCCESS' })
+      }).then(() => history.push(redirect));
   }
 }
 
