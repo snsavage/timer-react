@@ -12,7 +12,7 @@ import { authorize } from '../utils/session';
 class EditRoutineForm extends Component {
   componentWillMount() {
     const { routineId } = this.props.match.params;
-    const { actions, currentRoutine } = this.props;
+    const { actions } = this.props;
 
     if(routineId) { actions.loadCurrentRoutine(routineId) }
   }
