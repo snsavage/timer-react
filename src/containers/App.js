@@ -11,6 +11,7 @@ import EditRoutineForm from './EditRoutineForm';
 import Register from './Register';
 import SignIn from './SignIn';
 import SignOut from './SignOut';
+import PrivateRoute from './PrivateRoute';
 
 import './App.css';
 
@@ -44,7 +45,7 @@ class App extends Component {
               <Route path='/timer/routine' component={RoutineTimer} />
             </Switch>
             <Switch>
-              <Route
+              <PrivateRoute
                 path='/routines/:routineId/edit'
                 component={EditRoutineForm} />
               <Route path='/routines/new' component={NewRoutineForm} />
