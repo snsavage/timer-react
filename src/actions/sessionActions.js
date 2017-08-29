@@ -20,7 +20,14 @@ export function signUpUser(register, history) {
       .then(response => response.json())
       .then(response => {
         localStorage.setItem('jwt', response.jwt);
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            id: response.id, email: response.email, name: response.name,
+          })
+        );
         history.push("/");
+
         dispatch({
           type: 'SIGN_UP_SUCCESS',
           payload: response,
@@ -46,6 +53,13 @@ export function signInUser(credentials, history, redirect) {
       .then(response => response.json())
       .then(response => {
         localStorage.setItem('jwt', response.jwt);
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            id: response.id, email: response.email, name: response.name,
+          })
+        );
+
         dispatch({
           type: 'SIGN_IN_SUCCESS',
           payload: response,
@@ -56,9 +70,16 @@ export function signInUser(credentials, history, redirect) {
 
 export function signOutUser() {
   localStorage.removeItem('jwt');
+  localStorage.removeItem('user');
 
   return(dispatch) => {
     dispatch({ type: 'CLEAR_CURRENT_ROUTINE' });
     dispatch({ type: 'SIGN_OUT' });
+  }
+}
+
+export function loadUserTraits() {
+  return {
+    type: 'LOAD_USER_TRAITS',
   }
 }

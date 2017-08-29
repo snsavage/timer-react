@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Link, Switch } from 'react-router-dom'
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom';
 
 import Timer from './Timer';
@@ -13,9 +14,15 @@ import SignIn from './SignIn';
 import SignOut from './SignOut';
 import PrivateRoute from './PrivateRoute';
 
+import * as actions from '../actions/sessionActions';
+
 import './App.css';
 
 class App extends Component {
+  componentWillMount() {
+    this.props.actions.loadUserTraits();
+  }
+
   render() {
     return (
       <div className="App">
@@ -67,4 +74,10 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, null)(App));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(actions, dispatch),
+  };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

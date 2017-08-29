@@ -3,6 +3,11 @@ export function sessionReducer(state = {
   user: {},
 }, action) {
   switch(action.type) {
+    case 'LOAD_USER_TRAITS':
+      return Object.assign({}, state, {
+        user: JSON.parse(localStorage.user),
+      });
+
     case 'SIGN_UP_SUCCESS':
       return Object.assign(
         {}, state, {

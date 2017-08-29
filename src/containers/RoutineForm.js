@@ -8,17 +8,8 @@ import RoutineFormRoutineDetails from '../components/RoutineFormRoutineDetails';
 import RoutineFormGroups from '../components/RoutineFormGroups';
 
 import * as actions from '../actions/routineFormActions';
-import { loadCurrentRoutine } from '../actions/routineActions';
 
 export class RoutineForm extends Component {
-  componentWillMount() {
-    const { routineId, loadCurrentRoutine } = this.props;
-
-    if(routineId) {
-      loadCurrentRoutine(routineId);
-    }
-  }
-
   onFormChange = () => {
     const { saved, actions } = this.props;
 
@@ -72,17 +63,17 @@ function mapStateToProps(state, ownProps) {
     routine: state.currentRoutine.routine,
     saved: state.currentRoutine.saved,
     error: state.currentRoutine.error,
-    routineId: ownProps.match.params.routineId,
   }
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
   return {
     actions: bindActionCreators(actions, dispatch),
-    loadCurrentRoutine: bindActionCreators(loadCurrentRoutine, dispatch),
     onSubmit: bindActionCreators(ownProps.onSubmit, dispatch),
   };
 }
 
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RoutineForm));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(RoutineForm)
+);

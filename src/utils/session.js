@@ -16,6 +16,6 @@ export function requestOptions(options = {}) {
   return {...options, headers: headers()};
 }
 
-export function authorized(resource, user) {
+export function authorize(resource, user) {
   return resource.user_id === user.id && !!localStorage.jwt;
 }
