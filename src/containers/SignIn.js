@@ -16,9 +16,11 @@ class SignIn extends Component {
   }
 
   onSubmit = (ev) => {
+    const { state } = this.props.location;
+    const redirect = state ? state.from.pathname : "/"
+
     ev.preventDefault();
 
-    const redirect = this.props.location.state.from.pathname;
     this.props.actions.signInUser(this.state, this.props.history, redirect);
   }
 

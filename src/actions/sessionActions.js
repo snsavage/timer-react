@@ -18,15 +18,18 @@ export function signUpUser(register, history) {
 
     return fetch('api/v1/register', options)
       .then(response => response.json())
-      .then(token => {
-        localStorage.setItem('jwt', token.jwt);
+      .then(response => {
+        localStorage.setItem('jwt', response.jwt);
         history.push("/");
-        dispatch({ type: 'SIGN_UP_SUCCESS' });
+        dispatch({
+          type: 'SIGN_UP_SUCCESS',
+          payload: response,
+        });
       });
   }
 }
 
-export function signInUser(credentials, history, redirect = "/") {
+export function signInUser(credentials, history, redirect) {
   return(dispatch) => {
     const options = {
       method: 'POST',
@@ -41,9 +44,12 @@ export function signInUser(credentials, history, redirect = "/") {
 
     return fetch('api/v1/signin', options)
       .then(response => response.json())
-      .then(token => {
-        localStorage.setItem('jwt', token.jwt);
-        dispatch({ type: 'SIGN_IN_SUCCESS' })
+      .then(response => {
+        localStorage.setItem('jwt', response.jwt);
+        dispatch({
+          type: 'SIGN_IN_SUCCESS',
+          payload: response,
+        })
       }).then(() => history.push(redirect));
   }
 }
