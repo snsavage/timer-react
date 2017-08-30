@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router-dom';
@@ -17,6 +17,7 @@ import Nav from './Nav';
 
 import * as actions from '../actions/sessionActions';
 
+import { Container } from 'semantic-ui-react'
 import './App.css';
 
 class App extends Component {
@@ -27,7 +28,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <main>
+        <Container>
           <Nav loggedIn={this.props.loggedIn} location={this.props.location} />
           <div>
             <Route exact path='/' component={Timer} />
@@ -46,7 +47,7 @@ class App extends Component {
             <Route path='/signin' component={SignIn} />
             <Route path='/signout' component={SignOut} />
           </div>
-      </main>
+        </Container>
       </div>
     );
   }
