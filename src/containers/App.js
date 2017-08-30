@@ -13,6 +13,7 @@ import Register from './Register';
 import SignIn from './SignIn';
 import SignOut from './SignOut';
 import PrivateRoute from './PrivateRoute';
+import Nav from './Nav';
 
 import * as actions from '../actions/sessionActions';
 
@@ -27,24 +28,7 @@ class App extends Component {
     return (
       <div className="App">
         <main>
-          <nav>
-            <ul>
-              <li><Link to="/">Basic Timer</Link></li>
-              <li><Link to="/timer/routine">Routine Timer</Link></li>
-              <li><Link to="/routines">Routines</Link></li>
-              <li><Link to="/routines/new">New Routine</Link></li>
-              { this.props.loggedIn ? (
-                <div>
-                  <li><Link to="/signout">Sign Out</Link></li>
-                </div>
-              ) : (
-                <div>
-                  <li><Link to="/register">Register</Link></li>
-                  <li><Link to="/signin">Sign In</Link></li>
-                </div>
-              )}
-            </ul>
-          </nav>
+          <Nav loggedIn={this.props.loggedIn} location={this.props.location} />
           <div>
             <Route exact path='/' component={Timer} />
             <Switch>
