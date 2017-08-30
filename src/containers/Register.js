@@ -16,8 +16,12 @@ class Register extends Component {
   }
 
   onSubmit = (ev) => {
+    const { state } = this.props.location;
+    const redirect = state ? state.from.pathname : "/"
+
     ev.preventDefault();
-    this.props.actions.signUpUser(this.state, this.props.history);
+
+    this.props.actions.signUpUser(this.state, this.props.history, redirect);
   }
 
   render() {

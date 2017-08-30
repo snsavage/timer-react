@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router';
 import { PropTypes } from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import RoutineFormRoutineDetails from '../components/RoutineFormRoutineDetails';
 import RoutineFormGroups from '../components/RoutineFormGroups';
@@ -26,7 +27,14 @@ export class RoutineForm extends Component {
   }
 
   render() {
-    const { actions, error, routine, submitValue, formTitle } = this.props;
+    const {
+      actions,
+      error,
+      routine,
+      submitValue,
+      formTitle,
+      loggedIn,
+    } = this.props;
     const errors = error.length > 1 ? error : "";
 
     return (
@@ -38,10 +46,30 @@ export class RoutineForm extends Component {
         <RoutineFormRoutineDetails actions={actions} routine={routine} />
         <RoutineFormGroups actions={actions} groups={routine.groups} />
         <div>
-          <input
-            type="submit"
-            value={submitValue}
-            disabled={this.props.saved} />
+          { loggedIn ? (
+            <input
+              type="submit"
+              value={submitValue}
+              disabled={this.props.saved} />
+          ) : (
+            <p>
+              <Link to={{
+                pathname: "/register",
+                state: {from: this.props.location},
+              }}>
+                Register
+              </Link>
+              {" or "}
+              <Link to={{
+                pathname: "/signin",
+                state: {from: this.props.location},
+              }}>
+                Sign In
+              </Link>
+              {" "}
+              to save routine.
+            </p>
+          )}
         </div>
       </form>
     );
@@ -56,6 +84,7 @@ RoutineForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   submitValue: PropTypes.string.isRequired,
   formTitle: PropTypes.string.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {
@@ -63,6 +92,7 @@ function mapStateToProps(state, ownProps) {
     routine: state.currentRoutine.routine,
     saved: state.currentRoutine.saved,
     error: state.currentRoutine.error,
+    loggedIn: state.session.session,
   }
 }
 

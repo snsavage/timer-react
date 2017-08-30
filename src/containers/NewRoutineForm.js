@@ -8,7 +8,8 @@ import { clearCurrentRoutine } from '../actions/routineActions';
 
 export class NewRoutineForm extends Component {
   componentWillMount() {
-    this.props.clearCurrentRoutine();
+    const { saved, clearCurrentRoutine } = this.props;
+    if(saved) { clearCurrentRoutine() };
   }
 
   render () {
@@ -21,10 +22,16 @@ export class NewRoutineForm extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    saved: state.currentRoutine.saved,
+  }
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     clearCurrentRoutine: bindActionCreators(clearCurrentRoutine, dispatch),
   }
 }
 
-export default connect(null, mapDispatchToProps)(NewRoutineForm);
+export default connect(mapStateToProps, mapDispatchToProps)(NewRoutineForm);

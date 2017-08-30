@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch'
 
-export function signUpUser(register, history) {
+export function signUpUser(register, history, redirect = "/") {
   return(dispatch) => {
 
     const options = {
@@ -32,11 +32,11 @@ export function signUpUser(register, history) {
           type: 'SIGN_UP_SUCCESS',
           payload: response,
         });
-      });
+      }).then(() => history.push(redirect));
   }
 }
 
-export function signInUser(credentials, history, redirect) {
+export function signInUser(credentials, history, redirect = "/") {
   return(dispatch) => {
     const options = {
       method: 'POST',
