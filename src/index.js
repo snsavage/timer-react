@@ -11,6 +11,8 @@ import registerServiceWorker from './registerServiceWorker';
 
 import App from './containers/App';
 
+import 'semantic-ui-css/semantic.min.css';
+
 const composeEnhancers = composeWithDevTools({});
 const store = createStore(rootReducer, /* preloadedState, */ composeEnhancers(
   applyMiddleware(thunk),
