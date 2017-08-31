@@ -13,6 +13,17 @@ import {
 import { displayTime } from './../utils/displayTime';
 import { remainingDuration } from './../utils/timer';
 
+import {
+  Grid,
+  Button,
+  Loader,
+  Segment,
+  Header,
+  Icon,
+  Container,
+  List,
+} from 'semantic-ui-react'
+
 export class ComplexTimer extends Component {
   componentWillMount() {
     if(this.props.routineId) {
@@ -38,10 +49,6 @@ export class ComplexTimer extends Component {
   }
 
   handleStartRoutineClick = (event) => {
-    // When start is clicked...
-    // Create a new interval with setInterval...
-    // Store this intervalId in store...
-    // Callback should be action/reducer to updateTimer
     this.props.startCurrentRoutine();
   }
 
@@ -60,48 +67,90 @@ export class ComplexTimer extends Component {
     } = this.props;
 
     const playlistList = playlist.map((e, index) => {
-      return (
-        <li key={index}>
-          {e.groupID} - {e.groupNumber} - {e.name} - {displayTime(e.remainingDuration)}
-        </li>
-      )
+      if (index === 0) {
+        return (
+          <List.Item key={index}>
+            <List.Content>
+              <Header as='h3' color='red'>
+                {displayTime(e.remainingDuration)} {e.name}
+              </Header>
+            </List.Content>
+          </List.Item>
+        )
+      } else {
+        return (
+          <List.Item key={index}>
+            <List.Content>
+              {displayTime(e.remainingDuration)} {e.name}
+            </List.Content>
+          </List.Item>
+        )
+      }
     });
 
     const completedPlaylistList = completedPlaylist.map((e, index) => {
       return (
-        <li key={index}>
-          <em>{e.groupID} - {e.groupNumber} - {e.name} - {displayTime(0)}</em>
-        </li>
+        <List.Item key={index}>
+          <List.Icon name="checkmark" />
+          <List.Content>
+            <em>{e.name} {displayTime(0)}</em>
+          </List.Content>
+        </List.Item>
       )
     }).reverse();
 
     if(this.props.routineId) {
-      return (
-        <div className="complex-timer">
-          { loading ? (
-            <h3>Loading...</h3>
-          ) : (
-            <div>
-              <h1>Complex Timer</h1>
-              <Link
-                to="/timer/routine"
-                onClick={this.handleClearRoutineClick}>Remove Routine</Link>
-              <div>
-                <button onClick={this.handleStartRoutineClick}>Start</button>
-                <button onClick={this.handleStopRoutineClick}>Stop</button>
-                <button onClick={this.handleRewindRoutineClick}>Rewind</button>
-              </div>
-              <h2>Total Time: {displayTime(currentRoutine.duration)}</h2>
-              <h2>Remaining Time: {displayTime(remainingDuration(playlist))}</h2>
-              <h3>Playlist</h3>
-              <ul>
+      if(loading) {
+        return(
+          <Container textAlign="center" >
+            <Loader active inline>Loading Routine</Loader>
+          </Container>
+        );
+      } else {
+        return (
+          <Grid columns={2} padded>
+            <Grid.Column width={8}>
+              <Header as='h1'>Play {currentRoutine.name}</Header>
+              <Segment textAlign='center' padded>
+                <Header as='h1'>
+                  {displayTime(remainingDuration(playlist))}
+                </Header>
+                { playlist.length > 0 &&
+                  <Header as='h2'>
+                    {displayTime(playlist[0].remainingDuration)}
+                    {" "}
+                    {playlist[0].name}
+                  </Header>
+                }
+                <div>
+                  <Button
+                    color='green'
+                    onClick={this.handleStartRoutineClick}>
+                    Start
+                  </Button>
+                  <Button
+                    color='red'
+                    onClick={this.handleStopRoutineClick}>
+                    Stop
+                  </Button>
+                  <Button
+                    color='blue'
+                    onClick={this.handleRewindRoutineClick}>
+                    Rewind
+                  </Button>
+                </div>
+              </Segment>
+            </Grid.Column>
+            <Grid.Column width={8}>
+              <Header as='h3'>Playlist</Header>
+              <List divided relaxed size='large'>
                 {completedPlaylistList}
                 {playlistList}
-              </ul>
-            </div>
-          )}
-        </div>
-      );
+              </List>
+            </Grid.Column>
+          </Grid>
+        );
+      }
     } else {
       return (
         <Redirect to='/routines' />
