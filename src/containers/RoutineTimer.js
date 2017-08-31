@@ -127,20 +127,20 @@ export class ComplexTimer extends Component {
                 }
                 <div>
                   <Button
+                    icon="play"
                     color='green'
-                    onClick={this.handleStartRoutineClick}>
-                    Start
-                  </Button>
+                    onClick={this.handleStartRoutineClick}
+                    content="Start" />
                   <Button
+                    icon='stop'
                     color='red'
-                    onClick={this.handleStopRoutineClick}>
-                    Stop
-                  </Button>
+                    onClick={this.handleStopRoutineClick}
+                    content="Stop" />
                   <Button
                     color='blue'
-                    onClick={this.handleRewindRoutineClick}>
-                    Rewind
-                  </Button>
+                    icon='backward'
+                    onClick={this.handleRewindRoutineClick}
+                    content="Rewind" />
                 </div>
               </Segment>
             </Grid.Column>
