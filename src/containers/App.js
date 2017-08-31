@@ -17,7 +17,7 @@ import Nav from './Nav';
 
 import * as actions from '../actions/sessionActions';
 
-import { Container } from 'semantic-ui-react'
+import { Container, Grid } from 'semantic-ui-react'
 import './App.css';
 
 class App extends Component {
@@ -27,30 +27,26 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Container>
-          <Nav
-            loggedIn={this.props.loggedIn}
-            location={this.props.location} />
-          <div>
-            <Route exact path='/' component={Timer} />
-            <Switch>
-              <Route path='/timer/routine/:routineId' component={RoutineTimer} />
-              <Route path='/timer/routine' component={RoutineTimer} />
-            </Switch>
-            <Switch>
-              <PrivateRoute
-                path='/routines/:routineId/edit'
-                component={EditRoutineForm} />
-              <Route path='/routines/new' component={NewRoutineForm} />
-              <Route path='/routines' component={RoutinesExplore} />
-            </Switch>
-            <Route path='/register' component={Register} />
-            <Route path='/signin' component={SignIn} />
-            <Route path='/signout' component={SignOut} />
-          </div>
-        </Container>
-      </div>
+      <Container className="App">
+        <Nav
+          loggedIn={this.props.loggedIn}
+          location={this.props.location} />
+        <Route exact path='/' component={Timer} />
+        <Switch>
+          <Route path='/timer/routine/:routineId' component={RoutineTimer} />
+          <Route path='/timer/routine' component={RoutineTimer} />
+        </Switch>
+        <Switch>
+          <PrivateRoute
+            path='/routines/:routineId/edit'
+            component={EditRoutineForm} />
+          <Route path='/routines/new' component={NewRoutineForm} />
+          <Route path='/routines' component={RoutinesExplore} />
+        </Switch>
+        <Route path='/register' component={Register} />
+        <Route path='/signin' component={SignIn} />
+        <Route path='/signout' component={SignOut} />
+      </Container>
     );
   }
 }
