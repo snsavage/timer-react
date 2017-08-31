@@ -4,9 +4,18 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { fetchRoutine } from './../actions/routineActions';
-import { RoutineDetail } from './../components/RoutineDetail';
-import { RoutineGroups } from './../components/RoutineGroups';
+import { Groups } from './../components/Groups';
 import AuthorizedLink from '../containers/AuthorizedLink';
+import { displayTime } from './../utils/displayTime';
+
+import {
+  Button,
+  Loader,
+  Segment,
+  Header,
+  Icon,
+  Container
+} from 'semantic-ui-react'
 
 class RoutinesShow extends Component {
   componentWillMount() {
@@ -23,25 +32,54 @@ class RoutinesShow extends Component {
     const { routine, loading } = this.props.routine;
     const { user } = this.props;
 
-    return (
-      <div className="routine">
-        { loading ? (
-          <h3>Loading...</h3>
-        ) : (
-          <div>
-            <RoutineDetail routine={routine} />
-            <Link to={"/timer/routine/" + routine.id.toString()}>Play</Link>
-            <AuthorizedLink
+    if(loading) {
+      return (
+        <Container textAlign="center" >
+          <Loader active inline>Loading Routine</Loader>
+        </Container>
+      );
+    } else {
+      return (
+        <Container>
+          <Segment attached='top' clearing>
+            <Header as='h1' floated='left'>{routine.name}</Header>
+            <Header as='h4' floated='right'>
+              <Icon name='clock' />{displayTime(routine.duration)}
+            </Header>
+          </Segment>
+          <Segment attached>
+            <p>{routine.description}</p>
+            <p>
+              <a
+                href={routine.link}
+                target="_blank"
+                rel="noopener noreferrer">
+                More Information <Icon name='external' />
+              </a>
+            </p>
+          </Segment>
+          <Segment attached>
+            <Button
+              color="green"
+              as={Link}
+              to={"/timer/routine/" + routine.id.toString()}>
+              Play
+            </Button>
+            <Button
+              color="blue"
+              as={AuthorizedLink}
               resource={routine}
               user={user}
               to={`/routines/${routine.id}/edit`}>
               Edit
-            </AuthorizedLink>
-            <RoutineGroups groups={routine.groups} />
-          </div>
-        )}
-      </div>
-    )
+            </Button>
+          </Segment>
+          <Segment attached="bottom">
+            <Groups groups={routine.groups} />
+          </Segment>
+        </Container>
+      );
+    }
   };
 };
 

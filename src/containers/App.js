@@ -29,7 +29,9 @@ class App extends Component {
     return (
       <div className="App">
         <Container>
-          <Nav loggedIn={this.props.loggedIn} location={this.props.location} />
+          <Nav
+            loggedIn={this.props.loggedIn}
+            location={this.props.location} />
           <div>
             <Route exact path='/' component={Timer} />
             <Switch>

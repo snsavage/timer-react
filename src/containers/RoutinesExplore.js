@@ -5,15 +5,20 @@ import RoutinesList from './../containers/RoutinesList.js';
 import RoutinesShow from './RoutinesShow';
 import { RoutineListItem } from './../components/RoutineListItem';
 
+import { Grid } from 'semantic-ui-react'
+
 export default class RoutinesExplore extends Component {
   render() {
     return (
-      <div className="routines">
-        <h1>Routines</h1>
+      <Grid columns={2} padded>
+        <Grid.Column width={6}>
+          <RoutinesList component={RoutineListItem} />
+        </Grid.Column>
 
-        <RoutinesList component={RoutineListItem} />
-        <Route path='/routines/:routineId' component={RoutinesShow} />
-      </div>
+        <Grid.Column width={10}>
+          <Route path='/routines/:routineId' component={RoutinesShow} />
+        </Grid.Column>
+      </Grid>
     );
   }
 }

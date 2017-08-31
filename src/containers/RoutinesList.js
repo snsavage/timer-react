@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router'
 
 import { fetchRoutines } from './../actions/routineActions';
+
+import { Header, Menu, Container, Loader } from 'semantic-ui-react'
 
 class RoutinesList extends Component {
   componentDidMount() {
@@ -24,13 +27,15 @@ class RoutinesList extends Component {
 
     return (
       <div className="routines">
-        <h1>Routines</h1>
+        <Header as='h1'>Routines</Header>
         { this.props.loading ? (
-          <h3>Loading...</h3>
+          <Container textAlign="center" >
+            <Loader active inline>Loading Routines</Loader>
+          </Container>
         ) : (
-        <ul>
-          { routineListElements }
-        </ul>
+          <Menu fluid vertical tabular>
+            { routineListElements }
+          </Menu>
         )}
       </div>
     );
@@ -48,4 +53,6 @@ const mapDispatchToProps = (dispatch) => {
   return { fetchRoutines: bindActionCreators(fetchRoutines, dispatch)};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoutinesList);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(RoutinesList)
+);

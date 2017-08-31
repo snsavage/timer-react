@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { displayTime } from './../utils/displayTime';
+import { Menu, Label, Icon } from 'semantic-ui-react'
 
 export class RoutineListItem extends Component {
   render() {
     const { routine } = this.props;
 
     return (
-      <li>
-        <Link to={"/routines/" + routine.id.toString()}>{routine.name}</Link>
-        {` - ${displayTime(routine.duration)}`}
-      </li>
+      <Menu.Item
+        as={NavLink}
+        exact
+        activeClassName="active"
+        to={`/routines/${routine.id.toString()}`}>
+          <Label color='black' basic>
+            <Icon name='clock' />{displayTime(routine.duration)}
+          </Label>
+          {routine.name}
+      </Menu.Item>
     );
   };
 };
