@@ -57,7 +57,7 @@ export default class Timer extends Component {
       this.setState({
         remainingTime: this.state.remainingTime - 1,
       });
-      console.log(this.state.remainingTime);
+      // console.log(this.state.remainingTime);
       if(this.state.remainingTime <= 3 && this.state.remainingTime > 0) {
         this.beep("C4", "8n");
       } else if (this.state.remainingTime === 0 ){
