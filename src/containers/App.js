@@ -17,7 +17,7 @@ import Nav from './Nav';
 
 import * as actions from '../actions/sessionActions';
 
-import { Container } from 'semantic-ui-react'
+import { Icon, Segment, Container, List } from 'semantic-ui-react'
 import './App.css';
 
 class App extends Component {
@@ -27,26 +27,46 @@ class App extends Component {
 
   render() {
     return (
-      <Container className="App">
-        <Nav
-          loggedIn={this.props.loggedIn}
-          location={this.props.location} />
-        <Route exact path='/' component={Timer} />
-        <Switch>
-          <Route path='/timer/routine/:routineId' component={RoutineTimer} />
-          <Route path='/timer/routine' component={RoutineTimer} />
-        </Switch>
-        <Switch>
-          <PrivateRoute
-            path='/routines/:routineId/edit'
-            component={EditRoutineForm} />
-          <Route path='/routines/new' component={NewRoutineForm} />
-          <Route path='/routines' component={RoutinesExplore} />
-        </Switch>
-        <Route path='/register' component={Register} />
-        <Route path='/signin' component={SignIn} />
-        <Route path='/signout' component={SignOut} />
-      </Container>
+      <div>
+        <Container className="App">
+          <Nav
+            loggedIn={this.props.loggedIn}
+            location={this.props.location} />
+          <Route exact path='/' component={Timer} />
+          <Switch>
+            <Route path='/timer/routine/:routineId' component={RoutineTimer} />
+            <Route path='/timer/routine' component={RoutineTimer} />
+          </Switch>
+          <Switch>
+            <PrivateRoute
+              path='/routines/:routineId/edit'
+              component={EditRoutineForm} />
+            <Route path='/routines/new' component={NewRoutineForm} />
+            <Route path='/routines' component={RoutinesExplore} />
+          </Switch>
+          <Route path='/register' component={Register} />
+          <Route path='/signin' component={SignIn} />
+          <Route path='/signout' component={SignOut} />
+        </Container>
+        <Segment
+          style={{ margin: '1em 0em 0em', padding: '5em 0em' }}
+          vertical >
+          <Container textAlign='center'>
+            <List horizontal divided link>
+              <List.Item>Made in PA, U.S.A.</List.Item>
+              <List.Item><Icon name="copyright"/> 2017 Scott Savage</List.Item>
+              <List.Item>
+                <a
+                  href="https://www.snsavage.com/"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  snsavage.com<Icon name='external' />
+                </a>
+              </List.Item>
+            </List>
+          </Container>
+        </Segment>
+      </div>
     );
   }
 }
