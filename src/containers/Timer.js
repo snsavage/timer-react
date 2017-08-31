@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import './App.css';
 import Tone from 'tone';
+
+import './App.css';
+import { displayTime } from '../utils/displayTime';
+
+import { Segment, Button, Grid, Form, Header } from 'semantic-ui-react';
 
 export default class Timer extends Component {
   constructor() {
@@ -76,17 +80,35 @@ export default class Timer extends Component {
 
   render() {
     return (
-      <div className="App">
-        <h1>Countdown!</h1>
-        <Display remainingTime={this.state.remainingTime} />
-        <form onSubmit={(ev) => this.handleOnSubmit(ev)}>
-          <input type="text"
-            onChange={(ev) => this.handleOnChange(ev)}
-            onBlur={(ev) => this.handleOnBlur(ev) }
-            value={this.state.timer} />
-          <input type="submit" value={this.state.buttonName} />
-        </form>
-      </div>
+      <Grid
+        verticalAlign="middle"
+        centered
+        style={{
+          height: '100%',
+          margin: 0,
+        }}>
+        <Grid.Column width={6} textAlign="center">
+          <Segment padded>
+            <Header as="h1">React Timer</Header>
+            <Display remainingTime={this.state.remainingTime} />
+            <Form onSubmit={(ev) => this.handleOnSubmit(ev)}>
+              <Form.Field>
+                <input
+                  placeholder="Time in Seconds"
+                  type="text"
+                  onChange={(ev) => this.handleOnChange(ev)}
+                  onBlur={(ev) => this.handleOnBlur(ev) }
+                  value={this.state.timer} />
+              </Form.Field>
+              <Button
+                color="blue"
+                type="submit">
+                {this.state.buttonName}
+              </Button>
+            </Form>
+          </Segment>
+        </Grid.Column>
+      </Grid>
     );
   }
 }
@@ -94,9 +116,9 @@ export default class Timer extends Component {
 class Display extends Component {
   render() {
     return (
-      <div>
-        <h1>{this.props.remainingTime}</h1>
-      </div>
+      <Segment>
+        <Header as='h1'>{displayTime(this.props.remainingTime)}</Header>
+      </Segment>
     )
   }
 }
