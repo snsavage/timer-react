@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { Form } from 'semantic-ui-react';
+
 const TextField = ({label, name, value, onChange, index=0, type="text"}) => {
   const id = `${name.split(".").join("_")}_${index}`;
 
   return (
-    <div className="form-field">
+    <Form.Field>
       <label htmlFor={id}>{label}</label>
       <input
         type={type}
@@ -13,7 +15,7 @@ const TextField = ({label, name, value, onChange, index=0, type="text"}) => {
         id={id}
         value={value}
         onChange={onChange} />
-    </div>
+    </Form.Field>
   )
 };
 

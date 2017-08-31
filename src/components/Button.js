@@ -1,21 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Button = ({label, onClick, ...args}) => {
+import { Button as UIButton } from 'semantic-ui-react';
+
+const Button = ({label, float, size, color, icon, onClick, ...args}) => {
   function onButtonClick(ev) {
     ev.preventDefault();
     onClick({...args});
   };
 
   return (
-    <button onClick={(ev) => onButtonClick(ev)}>
-      {label}
-    </button>
+    <UIButton
+      className="submit"
+      floated={float}
+      color={color}
+      size={size}
+      icon={icon}
+      content={label}
+      onClick={(ev) => onButtonClick(ev)} />
   )
 }
 
 Button.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   onClick: PropTypes.func.isRequired,
 }
 

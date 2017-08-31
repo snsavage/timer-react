@@ -1,19 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { Form, TextArea } from 'semantic-ui-react';
+
 const TextAreaField = ({label, name, value, onChange, index=0}) => {
   const id = `${name.split(".").join("_")}_${index}`;
 
   return (
-    <div className="form-field">
+    <Form.Field className="form-field">
       <label htmlFor={id}>{label}</label>
-      <textarea
+      <TextArea
+        autoHeight
         name={name}
         id={id}
         value={value}
         onChange={onChange}
         />
-    </div>
+    </Form.Field>
   )
 };
 
