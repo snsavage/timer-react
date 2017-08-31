@@ -17,7 +17,7 @@ import Nav from './Nav';
 
 import * as actions from '../actions/sessionActions';
 
-import { Container, Grid } from 'semantic-ui-react'
+import { Container } from 'semantic-ui-react'
 import './App.css';
 
 class App extends Component {

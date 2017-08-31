@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import {
   loadCurrentRoutine,
@@ -19,7 +19,6 @@ import {
   Loader,
   Segment,
   Header,
-  Icon,
   Container,
   List,
 } from 'semantic-ui-react'
