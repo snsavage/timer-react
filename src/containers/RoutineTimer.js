@@ -102,9 +102,13 @@ export class ComplexTimer extends Component {
     if(this.props.routineId) {
       if(loading) {
         return(
-          <Container textAlign="center" >
-            <Loader active inline>Loading Routine</Loader>
-          </Container>
+          <Grid columns={1} padded centered>
+            <Grid.Column width={4}>
+              <Container textAlign="center" >
+                <Loader active inline>Loading Routine</Loader>
+              </Container>
+            </Grid.Column>
+          </Grid>
         );
       } else {
         return (
