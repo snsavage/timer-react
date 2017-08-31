@@ -15,21 +15,24 @@ export default class Nav extends Component {
             exact
             activeClassName="active"
             to="/"
-            name="Basic Timer" />
+            icon="home" />
           <Menu.Item
             as={NavLink}
+            icon="clock"
             activeClassName="active"
             to="/timer/routine"
             name="Routine Timer" />
           <Menu.Item
             as={NavLink}
             exact
+            icon="list"
             activeClassName="active"
             to="/routines"
             name="Routines" />
           <Menu.Item
             as={NavLink}
             activeClassName="active"
+            icon="plus"
             to="/routines/new"
             name="New Routine" />
           { this.props.loggedIn ? (
@@ -38,6 +41,7 @@ export default class Nav extends Component {
                 as={NavLink}
                 activeClassName="active"
                 to="/signout"
+                icon="sign out"
                 name="Sign Out" />
             </Menu.Menu>
           ) : (
@@ -46,11 +50,13 @@ export default class Nav extends Component {
                 as={NavLink}
                 activeClassName="active"
                 to="/register"
+                icon="signup"
                 name="Register" />
               <Menu.Item
                 as={NavLink}
                 activeClassName="active"
                 to="/signin"
+                icon="sign in"
                 name="Sign In" />
             </Menu.Menu>
           )}
