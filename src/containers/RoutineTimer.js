@@ -8,6 +8,7 @@ import {
   clearCurrentRoutine,
   startCurrentRoutine,
   rewindCurrentRoutine,
+  clearCurrentInterval,
 } from './../actions/routineActions';
 
 import { displayTime } from './../utils/displayTime';
@@ -38,9 +39,13 @@ export class ComplexTimer extends Component {
       this.props.loadCurrentRoutine(nextProps.match.params.routineId);
     }
 
-    if (nextProps.playlist.length === 0) {
-      clearInterval(this.props.timerId);
+    if (nextProps.playlist.length === 0 && this.props.playing) {
+      this.props.clearCurrentInterval(this.props.timerId);
     }
+  }
+
+  handleRestartRoutine = (event) => {
+    this.props.loadCurrentRoutine(this.props.routineId);
   }
 
   handleClearRoutineClick = (event) => {
@@ -48,15 +53,17 @@ export class ComplexTimer extends Component {
   }
 
   handleStartRoutineClick = (event) => {
-    this.props.startCurrentRoutine();
+    if (!this.props.playing) {
+      this.props.startCurrentRoutine();
+    }
   }
 
   handleStopRoutineClick = (event) => {
-    clearInterval(this.props.timerId);
+    this.props.clearCurrentInterval(this.props.timerId);
   }
 
   handleRewindRoutineClick = (event) => {
-    clearInterval(this.props.timerId);
+    this.props.clearCurrentInterval(this.props.timerId);
     this.props.rewindCurrentRoutine();
   }
 
@@ -66,7 +73,7 @@ export class ComplexTimer extends Component {
     } = this.props;
 
     const playlistList = playlist.map((e, index) => {
-      if (index === 0) {
+      if (index === 0 && this.props.playing) {
         return (
           <List.Item key={index}>
             <List.Content>
@@ -126,11 +133,20 @@ export class ComplexTimer extends Component {
                   </Header>
                 }
                 <div>
-                  <Button
-                    icon="play"
-                    color='green'
-                    onClick={this.handleStartRoutineClick}
-                    content="Start" />
+                  { playlist.length > 0 ? (
+                    <Button
+                      icon="play"
+                      color='green'
+                      onClick={this.handleStartRoutineClick}
+                      disabled={this.props.playing}
+                      content="Start" />
+                  ) : (
+                    <Button
+                      icon="refresh"
+                      color='blue'
+                      onClick={this.handleRestartRoutine}
+                      content="Restart" />
+                  )}
                   <Button
                     icon='stop'
                     color='red'
@@ -170,6 +186,7 @@ const mapStateToProps = (state, ownProps) => {
     routineId: ownProps.match.params.routineId,
     timerId: state.currentRoutine.timerId,
     completedPlaylist: state.currentRoutine.completedPlaylist,
+    playing: state.currentRoutine.playing,
   }
 }
 
@@ -179,6 +196,7 @@ const mapDispatchToProps = (dispatch) => {
     startCurrentRoutine: bindActionCreators(startCurrentRoutine, dispatch),
     rewindCurrentRoutine: bindActionCreators(rewindCurrentRoutine, dispatch),
     loadCurrentRoutine: bindActionCreators(loadCurrentRoutine, dispatch),
+    clearCurrentInterval: bindActionCreators(clearCurrentInterval, dispatch),
   };
 };
 

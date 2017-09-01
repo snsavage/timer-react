@@ -34,6 +34,7 @@ function defaultRoutine(uuid, groupOrder = 1, intervalOrder = 1) {
 }
 
 export function currentRoutineReducer(state = {
+  playing: false,
   loading: true,
   saved: true,
   error: "",
@@ -310,12 +311,16 @@ export function currentRoutineReducer(state = {
           routine: defaultRoutine(uuidV4),
           playlist: [],
           completedPlaylist: [],
-          saved: true
+          saved: true,
+          playing: false,
         }
       );
 
     case 'START_TIMER':
-      return Object.assign({}, state, { timerId: action.payload });
+      return Object.assign({}, state, {
+        playing: true,
+        timerId: action.payload
+      });
 
     case 'ADVANCE_TIMER':
       return Object.assign(
@@ -326,6 +331,12 @@ export function currentRoutineReducer(state = {
       return Object.assign(
         {}, state, rewindPlaylist(state)
       );
+
+    case 'STOP_INTERVAL':
+      return Object.assign(
+        {}, state, { playing: false }
+      );
+
 
     default:
       return state;

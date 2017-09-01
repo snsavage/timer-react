@@ -1,5 +1,13 @@
 import fetch from 'isomorphic-fetch'
 import { requestOptions } from '../utils/session';
+import Tone from 'tone';
+
+import { remainingDuration } from './../utils/timer';
+
+const synth = new Tone.Synth().toMaster();
+const beep = (note, duration) => {
+  synth.triggerAttackRelease(note, duration);
+}
 
 export function fetchRoutines() {
   return(dispatch) => {
@@ -17,14 +25,14 @@ export function fetchRoutines() {
 
 export function loadCurrentRoutine(id) {
   return(dispatch) => {
-    dispatch({ type: 'LOADING_CURRENT_ROUTINE' });
+    dispatch({type: 'CLEAR_CURRENT_ROUTINE'})
+    dispatch({type: 'LOADING_CURRENT_ROUTINE'});
 
     return fetch(`/api/v1/routines/${id}`, requestOptions())
       .then(response => response.json())
-      .then(routine => dispatch({
-        type: 'FETCH_CURRENT_ROUTINE',
-        payload: routine.routine,
-      }));
+      .then(routine => {
+        dispatch({type: 'FETCH_CURRENT_ROUTINE', payload: routine.routine})
+      });
   }
 }
 
@@ -32,17 +40,39 @@ export function clearCurrentRoutine() {
   return { type: 'CLEAR_CURRENT_ROUTINE' }
 }
 
-export function advanceCurrentRoutine(playlist, timerId) {
-  return { type: 'ADVANCE_TIMER' }
+export function advanceCurrentRoutine(playlist) {
+  return(dispatch, getState) => {
+    const { currentRoutine } = getState();
+    const playlist = currentRoutine.playlist;
+    const time = remainingDuration(playlist);
+    const groupTime = playlist[0].remainingDuration - 1;
+
+    if (groupTime < 4 && groupTime > 0) {
+      beep("C4", "8n");
+    } else if (groupTime === 0 && time > 0) {
+      beep("C5", "8n");
+    }
+
+    dispatch({ type: 'ADVANCE_TIMER' });
+  }
 }
 
 export function rewindCurrentRoutine() {
   return { type: 'REWIND_TIMER' }
 }
 
-export function startCurrentRoutine() {
+export function clearCurrentInterval(id) {
+  clearInterval(id);
+  beep("C5", "4n");
+
+  return { type: 'STOP_INTERVAL' };
+}
+
+export function startCurrentRoutine(id) {
   return(dispatch) => {
-    const timerId = setInterval(() => dispatch(advanceCurrentRoutine()), 1000);
+    const timerId = setInterval(() => {
+      return dispatch(advanceCurrentRoutine())
+    }, 1000);
 
     dispatch({ type: 'START_TIMER', payload: timerId });
     dispatch({ type: 'ADVANCE_TIMER' });
