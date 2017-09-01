@@ -5,7 +5,7 @@ import TextField from '../components/TextField';
 import NumberField from '../components/NumberField';
 import Button from '../components/Button';
 
-import { Button as UIButton, List, Form, Segment } from 'semantic-ui-react';
+import { List, Form } from 'semantic-ui-react';
 
 export default class RoutineFormIntervals extends Component {
   render() {
