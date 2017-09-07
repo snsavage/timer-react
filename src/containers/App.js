@@ -20,6 +20,17 @@ import * as actions from '../actions/sessionActions';
 import { Icon, Segment, Container, List } from 'semantic-ui-react'
 import './App.css';
 
+import ReactGA from 'react-ga';
+ReactGA.initialize('UA-106072204-1');
+function Analytics(props){
+  if (process.env.NODE_ENV === "production" ) {
+    ReactGA.set({ page: props.location.pathname + props.location.search });
+    ReactGA.pageview(props.location.pathname + props.location.search);
+  }
+
+  return null;
+}
+
 class App extends Component {
   componentWillMount() {
     this.props.actions.loadUserTraits();
@@ -32,6 +43,7 @@ class App extends Component {
           <Nav
             loggedIn={this.props.loggedIn}
             location={this.props.location} />
+          <Route path="/" component={Analytics}/>
           <Route exact path='/' component={Timer} />
           <Switch>
             <Route path='/timer/routine/:routineId' component={RoutineTimer} />
