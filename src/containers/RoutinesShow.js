@@ -7,6 +7,7 @@ import { fetchRoutine } from './../actions/routineActions';
 import { Groups } from './../components/Groups';
 import AuthorizedLink from '../containers/AuthorizedLink';
 import { displayTime } from './../utils/displayTime';
+import RoutineDetails from './../components/RoutineDetails';
 
 import {
   Button,
@@ -47,17 +48,7 @@ class RoutinesShow extends Component {
               <Icon name='clock' />{displayTime(routine.duration)}
             </Header>
           </Segment>
-          <Segment attached>
-            <p>{routine.description}</p>
-            <p>
-              <a
-                href={routine.link}
-                target="_blank"
-                rel="noopener noreferrer">
-                More Information <Icon name='external' />
-              </a>
-            </p>
-          </Segment>
+          <RoutineDetails routine={routine} />
           <Segment attached>
             <Button
               color="green"
