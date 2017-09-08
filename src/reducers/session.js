@@ -1,8 +1,12 @@
 export function sessionReducer(state = {
   session: !!localStorage.jwt,
   user: {},
+  error: "",
 }, action) {
   switch(action.type) {
+    case 'AUTH_ERROR':
+      return Object.assign({}, state, { error: action.payload });
+
     case 'LOAD_USER_TRAITS':
       return Object.assign({}, state, {
         user: JSON.parse(localStorage.user),
@@ -16,7 +20,8 @@ export function sessionReducer(state = {
             id: action.payload.id,
             email: action.payload.email,
             name: action.payload.name,
-          }
+          },
+          error: "",
         }
       );
 
@@ -28,7 +33,8 @@ export function sessionReducer(state = {
             id: action.payload.id,
             email: action.payload.email,
             name: action.payload.name,
-          }
+          },
+          error: "",
         }
       );
 

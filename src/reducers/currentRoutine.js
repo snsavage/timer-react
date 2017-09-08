@@ -45,7 +45,7 @@ export function currentRoutineReducer(state = {
   switch(action.type) {
     case 'SUCCESSFULLY_CREATED_ROUTINE':
       return Object.assign({}, state, {
-        loading: false, saved: true, currentRoutine: action.payload
+        loading: false, saved: true, error: "", currentRoutine: action.payload
       });
 
     case 'UNSUCCESSFULLY_CREATED_ROUTINE':
@@ -58,14 +58,13 @@ export function currentRoutineReducer(state = {
 
     case 'SUCCESSFULLY_UPDATED_ROUTINE':
       return Object.assign({}, state, {
-        loading: false, saved: true, currentRoutine: action.payload
+        loading: false, saved: true, error: "", currentRoutine: action.payload
       });
 
     case 'UNSUCCESSFULLY_UPDATED_ROUTINE':
       return Object.assign({}, state, {
         loading: false, saved: false, error: action.payload
       });
-
 
     case 'UPDATING_ROUTINE':
       return Object.assign({}, state, { loading: true });
