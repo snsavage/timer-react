@@ -7,6 +7,9 @@ export function sessionReducer(state = {
     case 'AUTH_ERROR':
       return Object.assign({}, state, { error: action.payload });
 
+    case 'CLEAR_AUTH_ERROR':
+      return Object.assign({}, state, { error: "" });
+
     case 'LOAD_USER_TRAITS':
       return Object.assign({}, state, {
         user: JSON.parse(localStorage.user),
