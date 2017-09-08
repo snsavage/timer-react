@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Tone from 'tone';
 
 import './App.css';
-import { displayTime } from '../utils/displayTime';
+import { convertTime, displayTime } from '../utils/displayTime';
 
 import { Segment, Button, Grid, Form, Header } from 'semantic-ui-react';
 
@@ -10,6 +10,7 @@ export default class Timer extends Component {
   constructor() {
     super();
     this.state = {
+      input: [],
       timer: '',
       remainingTime: 0,
       intervalId: null,
@@ -23,14 +24,33 @@ export default class Timer extends Component {
   }
 
   handleOnChange(ev) {
+    const update = [...this.state.input];
+
+    if(update.length > 2) { update.splice(-2, 0, ":") };
+    if(update.length > 5) { update.splice(-5, 0, ":") };
+
     this.setState({
-      timer: ev.target.value
+      timer: update.join("")
     });
+  }
+
+  handleKeyDown(ev) {
+    if(ev.key.match(/\d/) && this.state.input.length < 6 ) {
+      const input = [...this.state.input, ev.key];
+      this.setState({ input: input });
+    } else if (ev.key === "Backspace") {
+      const input = [...this.state.input]
+      input.pop();
+      this.setState({ input: input });
+    } else if (ev.key === "Enter" ) {
+      this.handleOnBlur();
+      ev.target.blur();
+    }
   }
 
   handleOnBlur(ev) {
     this.setState({
-      remainingTime: parseInt(this.state.timer, 10),
+      remainingTime: convertTime(this.state.timer),
     });
   }
 
@@ -94,9 +114,10 @@ export default class Timer extends Component {
             <Form onSubmit={(ev) => this.handleOnSubmit(ev)}>
               <Form.Field>
                 <input
-                  placeholder="Time in Seconds"
+                  placeholder="HH:MM:SS"
                   type="text"
                   onChange={(ev) => this.handleOnChange(ev)}
+                  onKeyDown={(ev) => this.handleKeyDown(ev)}
                   onBlur={(ev) => this.handleOnBlur(ev) }
                   value={this.state.timer} />
               </Form.Field>
