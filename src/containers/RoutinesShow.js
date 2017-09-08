@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { fetchRoutine } from './../actions/routineActions';
+import * as actions from './../actions/routineActions';
 import { Groups } from './../components/Groups';
 import AuthorizedLink from '../containers/AuthorizedLink';
 import { displayTime } from './../utils/displayTime';
@@ -20,13 +21,20 @@ import {
 
 class RoutinesShow extends Component {
   componentWillMount() {
-    this.props.fetchRoutine(this.props.routineId);
+    this.props.actions.fetchRoutine(this.props.routineId);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.match.params.routineId !== this.props.routineId) {
-      this.props.fetchRoutine(nextProps.match.params.routineId);
+      this.props.actions.fetchRoutine(nextProps.match.params.routineId);
     }
+  }
+
+  onDeleteRoutine = (ev) => {
+    const { routine, actions, history } = this.props;
+    ev.preventDefault();
+
+    actions.deleteRoutine(routine.routine.id, history);
   }
 
   render() {
@@ -64,6 +72,15 @@ class RoutinesShow extends Component {
               to={`/routines/${routine.id}/edit`}>
               Edit
             </Button>
+            <Button
+              onClick={(ev) => this.onDeleteRoutine(ev)}
+              color="red"
+              as={AuthorizedLink}
+              resource={routine}
+              user={user}
+              to={`/routines`}>
+              Delete
+            </Button>
           </Segment>
           <Segment attached="bottom">
             <Groups groups={routine.groups} />
@@ -83,7 +100,11 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return { fetchRoutine: bindActionCreators(fetchRoutine, dispatch)};
+  return {
+    actions: bindActionCreators(actions, dispatch),
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoutinesShow);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(RoutinesShow)
+);
