@@ -10,7 +10,7 @@ export default class Timer extends Component {
   constructor() {
     super();
     this.state = {
-      input: [],
+      input: [0,0,0,0,0,0],
       timer: '',
       remainingTime: 0,
       intervalId: null,
@@ -35,13 +35,16 @@ export default class Timer extends Component {
   }
 
   handleKeyDown(ev) {
-    if(ev.key.match(/\d/) && this.state.input.length < 6 ) {
-      const input = [...this.state.input, ev.key];
+    if(ev.key.match(/\d/) && this.state.input[0] === 0) {
+      const input = [...this.state.input];
+      input.shift();
+      input.push(ev.key);
       this.setState({ input: input });
     } else if (ev.key === "Backspace") {
       const input = [...this.state.input]
       input.pop();
-      this.setState({ input: input });
+      input.unshift(0);
+      this.setState({ input: input })
     } else if (ev.key === "Enter" ) {
       this.handleOnBlur();
       ev.target.blur();
