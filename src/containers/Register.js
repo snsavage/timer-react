@@ -5,12 +5,16 @@ import { withRouter } from 'react-router-dom';
 
 import * as actions from '../actions/sessionActions';
 
-import { Button, Grid, Form, Header } from 'semantic-ui-react';
+import { Message, Button, Grid, Form, Header } from 'semantic-ui-react';
 
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = { name: "", email: "", password: "" };
+  }
+
+  componentWillUnmount() {
+    this.props.actions.clearAuthError();
   }
 
   onChange = (ev) => {
@@ -27,6 +31,8 @@ class Register extends Component {
   }
 
   render() {
+    const { error } = this.props;
+
     return (
       <Grid
         verticalAlign="middle"
@@ -37,6 +43,14 @@ class Register extends Component {
         }}>
         <Grid.Column width={6}>
           <Header as="h1">Register</Header>
+
+          { error.length > 1 &&
+            <Message
+              error
+              header='Oh no!  Something went wrong!'
+              content={error} />
+          }
+
           <Form onChange={(ev) => this.onChange(ev)} >
             <Form.Field>
               <label htmlFor="name">Name</label>
@@ -75,8 +89,14 @@ class Register extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return { error: state.session.error };
+}
+
 const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(actions, dispatch) };
 }
 
-export default withRouter(connect(null, mapDispatchToProps)(Register));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(Register)
+);

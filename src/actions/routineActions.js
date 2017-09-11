@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import { requestOptions } from '../utils/session';
+import { handleErrors } from '../utils/api';
 import Tone from 'tone';
 
 import { remainingDuration } from './../utils/timer';
@@ -90,4 +91,20 @@ export function fetchRoutine(id) {
         payload: routine.routine,
       }));
   }
+}
+
+export function deleteRoutine(id, history) {
+  return(dispatch) => {
+    const options = requestOptions({
+      method: 'DELETE'
+    });
+
+    dispatch({ type: 'DELETING_ROUTINE' });
+
+    return fetch(`/api/v1/routines/${id}`, options)
+      .then(handleErrors)
+      .then(dispatch({ type: 'DELETE_ROUTINES' }))
+      .then(history.push(`/routines`))
+      .catch((error) => { dispatch({ type: 'UNSUCCESSFULLY_DELETED_ROUTINE' })})
+  };
 }

@@ -43,27 +43,28 @@ class App extends Component {
           <Nav
             loggedIn={this.props.loggedIn}
             location={this.props.location} />
-          <Route path="/" component={Analytics}/>
-          <Route exact path='/' component={Timer} />
-          <Switch>
-            <Route path='/timer/routine/:routineId' component={RoutineTimer} />
-            <Route path='/timer/routine' component={RoutineTimer} />
-          </Switch>
-          <Switch>
-            <PrivateRoute
-              path='/routines/:routineId/edit'
-              component={EditRoutineForm} />
-            <Route path='/routines/new' component={NewRoutineForm} />
-            <Route path='/routines' component={RoutinesExplore} />
-          </Switch>
-          <Route path='/register' component={Register} />
-          <Route path='/signin' component={SignIn} />
-          <Route path='/signout' component={SignOut} />
-        </Container>
-        <Segment
-          style={{ margin: '1em 0em 0em', padding: '5em 0em' }}
-          vertical >
-          <Container textAlign='center'>
+          <main>
+            <Route path="/" component={Analytics}/>
+            <Route exact path='/' component={Timer} />
+            <Switch>
+              <Route path='/timer/routine/:routineId' component={RoutineTimer} />
+              <Route path='/timer/routine' component={RoutineTimer} />
+            </Switch>
+            <Switch>
+              <PrivateRoute
+                path='/routines/:routineId/edit'
+                component={EditRoutineForm} />
+              <Route path='/routines/new' component={NewRoutineForm} />
+              <Route path='/routines' component={RoutinesExplore} />
+            </Switch>
+            <Route path='/register' component={Register} />
+            <Route path='/signin' component={SignIn} />
+            <Route path='/signout' component={SignOut} />
+          </main>
+          <Segment
+            className="footer"
+            textAlign="center"
+            vertical >
             <List horizontal divided link>
               <List.Item>Made in PA, U.S.A.</List.Item>
               <List.Item><Icon name="copyright"/> 2017 Scott Savage</List.Item>
@@ -76,8 +77,8 @@ class App extends Component {
                 </a>
               </List.Item>
             </List>
-          </Container>
-        </Segment>
+          </Segment>
+        </Container>
       </div>
     );
   }

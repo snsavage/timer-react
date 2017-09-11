@@ -1,4 +1,18 @@
+.ui.container.App {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .App {
   padding-top: 1em;
+}
+
+main {
   flex: 1;
+}
+
+.footer {
+  margin: 1em 0 0;
+  padding: 5em 0;
 }

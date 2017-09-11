@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch'
+import { handleErrors } from '../utils/api';
 
 export function signUpUser(register, history, redirect = "/") {
   return(dispatch) => {
@@ -17,6 +18,7 @@ export function signUpUser(register, history, redirect = "/") {
     };
 
     return fetch('api/v1/register', options)
+      .then(handleErrors)
       .then(response => response.json())
       .then(response => {
         localStorage.setItem('jwt', response.jwt);
@@ -32,7 +34,15 @@ export function signUpUser(register, history, redirect = "/") {
           type: 'SIGN_UP_SUCCESS',
           payload: response,
         });
-      }).then(() => history.push(redirect));
+      })
+      .then(() => history.push(redirect))
+      .catch((error) => {
+        dispatch({
+          type: 'AUTH_ERROR',
+          payload: "Your registration could not be completed!",
+        })
+      });
+
   }
 }
 
@@ -50,6 +60,7 @@ export function signInUser(credentials, history, redirect = "/") {
     };
 
     return fetch('api/v1/signin', options)
+      .then(handleErrors)
       .then(response => response.json())
       .then(response => {
         localStorage.setItem('jwt', response.jwt);
@@ -64,7 +75,14 @@ export function signInUser(credentials, history, redirect = "/") {
           type: 'SIGN_IN_SUCCESS',
           payload: response,
         })
-      }).then(() => history.push(redirect));
+      })
+      .then(() => history.push(redirect))
+      .catch((error) => {
+        dispatch({
+          type: 'AUTH_ERROR',
+          payload: "Sign in could not be completed!",
+        })
+      });
   }
 }
 
@@ -84,4 +102,8 @@ export function loadUserTraits() {
   } else {
     return { type: 'NO_USER_TRAITS_FOUND' };
   }
+}
+
+export function clearAuthError() {
+  return { type: 'CLEAR_AUTH_ERROR' };
 }

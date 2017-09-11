@@ -3,6 +3,9 @@ export function routineReducer(state = {
   routine: {},
 } , action) {
   switch(action.type) {
+    case 'DELETE_ROUTINE':
+      return Object.assign({}, { routine: {}, loading: false });
+
     case 'LOADING_ROUTINE':
       return Object.assign({}, state, { loading: true });
 
@@ -21,6 +24,8 @@ export function routinesReducer(state = {
   routines: [],
 }, action) {
   switch(action.type) {
+    case 'DELETE_ROUTINES':
+      return Object.assign({}, { routines: [], loading: false });
     case 'LOADING_ROUTINES':
       return Object.assign({}, state, { loading: true });
     case 'FETCH_ROUTINES':

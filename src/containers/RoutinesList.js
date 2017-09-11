@@ -12,6 +12,12 @@ class RoutinesList extends Component {
     this.props.fetchRoutines();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.routines.length === 0 ) {
+      this.props.fetchRoutines();
+    }
+  }
+
   render() {
     const { routines, component, ...passThroughProps } = this.props;
 

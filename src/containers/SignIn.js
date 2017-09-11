@@ -5,12 +5,16 @@ import { withRouter } from 'react-router-dom';
 
 import * as actions from '../actions/sessionActions';
 
-import { Button, Grid, Form, Header } from 'semantic-ui-react';
+import { Message, Button, Grid, Form, Header } from 'semantic-ui-react';
 
 class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = { email: "", password: "" }
+  }
+
+  componentWillUnmount() {
+    this.props.actions.clearAuthError();
   }
 
   onChange = (ev) => {
@@ -27,6 +31,8 @@ class SignIn extends Component {
   }
 
   render() {
+    const { error } = this.props;
+
     return (
       <Grid
         verticalAlign="middle"
@@ -37,6 +43,14 @@ class SignIn extends Component {
         }}>
         <Grid.Column width={6}>
           <Header as="h1">Sign In</Header>
+
+          { error.length > 1 &&
+            <Message
+              error
+              header='Oh no!  Something went wrong!'
+              content={error} />
+          }
+
           <Form onChange={(ev) => this.onChange(ev)} >
             <Form.Field>
               <label htmlFor="email">Email</label>
@@ -67,8 +81,14 @@ class SignIn extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return { error: state.session.error };
+}
+
 const mapDispatchToProps = (dispatch) => {
   return { actions: bindActionCreators(actions, dispatch) };
 }
 
-export default withRouter(connect(null, mapDispatchToProps)(SignIn));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(SignIn)
+);

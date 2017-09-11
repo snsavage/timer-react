@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import TextField from '../components/TextField';
-import NumberField from '../components/NumberField';
 import Button from '../components/Button';
+import DurationField from '../components/DurationField';
+
+import { convertTime } from '../utils/displayTime';
 
 import { List, Form } from 'semantic-ui-react';
 
@@ -21,17 +23,18 @@ export default class RoutineFormIntervals extends Component {
             onChange={(ev) =>
               actions.changeInterval(
                 groupId, interval.id, "name", ev.target.value)} />
-          <NumberField
+          <DurationField
             label="Duration"
+            placeholder="HH:MM:SS"
             name={`routine.group[${groupIndex}].interval[${index}].duration`}
-            value={interval.duration}
-            onChange={(ev) =>
-              actions.changeInterval(
+            action={
+              actions.changeInterval.bind(
+                this,
                 groupId,
                 interval.id,
-                "duration",
-                parseInt(ev.target.value, 10)
-              )} />
+                "duration"
+              )}
+            value={interval.duration} />
           <Button
             color="blue"
             icon="chevron up"
