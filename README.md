@@ -3,7 +3,9 @@
 Timer React provides the [React](https://facebook.github.io/react/) based
 front-end for my Timer project.  [Timer
 Rails](https://github.com/snsavage/timer-rails) provides the backend API for
-this project.  Timer React is currently a work in progress.
+this project.  Timer React is currently a work in progress.  A live demo of the
+project is available at
+[https://react-timer.snsavage.com/](https://react-timer.snsavage.com/).
 
 Timer React was created as a project for the [ Flatiron School's Online Web
 Developer Program](https://flatironschool.com/programs/online-web-developer-career-course).
