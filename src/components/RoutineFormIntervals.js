@@ -5,8 +5,6 @@ import TextField from '../components/TextField';
 import Button from '../components/Button';
 import DurationField from '../components/DurationField';
 
-import { convertTime } from '../utils/displayTime';
-
 import { List, Form } from 'semantic-ui-react';
 
 export default class RoutineFormIntervals extends Component {

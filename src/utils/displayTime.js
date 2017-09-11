@@ -22,8 +22,6 @@ export function displayTimeNoUnits(totalSeconds) {
   if (isNaN(totalSeconds)) { return defaultValue };
   if (totalSeconds === 0) { return defaultValue };
 
-  let units = "";
-
   totalSeconds = Number(totalSeconds);
   let hours = Math.floor(totalSeconds / 3600);
   let minutes = Math.floor(totalSeconds % 3600 / 60);
