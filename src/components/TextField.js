@@ -3,7 +3,16 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'semantic-ui-react';
 
-const TextField = ({label, name, value, onChange, index=0, type="text"}) => {
+const TextField = ({
+  label,
+  name,
+  value,
+  onChange,
+  onKeyDown,
+  placeholder,
+  index=0,
+  type="text"
+}) => {
   const id = `${name.split(".").join("_")}_${index}`;
 
   return (
@@ -12,8 +21,10 @@ const TextField = ({label, name, value, onChange, index=0, type="text"}) => {
       <input
         type={type}
         name={name}
+        placeholder={placeholder}
         id={id}
         value={value}
+        onKeyDown={onKeyDown}
         onChange={onChange} />
     </Form.Field>
   )

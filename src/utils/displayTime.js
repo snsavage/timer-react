@@ -16,6 +16,26 @@ export function convertTime(input) {
   return total;
 }
 
+export function displayTimeNoUnits(totalSeconds) {
+  const defaultValue = "00:00:00";
+
+  if (isNaN(totalSeconds)) { return defaultValue };
+  if (totalSeconds === 0) { return defaultValue };
+
+  let units = "";
+
+  totalSeconds = Number(totalSeconds);
+  let hours = Math.floor(totalSeconds / 3600);
+  let minutes = Math.floor(totalSeconds % 3600 / 60);
+  let seconds = Math.floor(totalSeconds % 3600 % 60);
+
+  let hoursDisplay = pad(hours) + ":";
+  let minutesDisplay = pad(minutes) + ":";
+  let secondsDisplay = pad(seconds);
+
+  return hoursDisplay + minutesDisplay + secondsDisplay;
+}
+
 export function displayTime(totalSeconds) {
   const defaultValue = "00:00:00";
 
