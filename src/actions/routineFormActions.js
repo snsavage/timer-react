@@ -3,10 +3,16 @@ import { requestOptions } from '../utils/session';
 import { handleErrors, processRoutineForApi } from '../utils/api';
 
 export function changeRoutine(field, value) {
-  return {
-    type: 'CHANGE_CURRENT_ROUTINE',
-    field: field,
-    value: value,
+  return(dispatch) => {
+    dispatch({
+      type: 'CHANGE_CURRENT_ROUTINE',
+      field: field,
+      value: value,
+    })
+
+    if(field === "public") {
+      dispatch({ type: 'MARK_ROUTINE_AS_NOT_SAVED' });
+    }
   }
 }
 

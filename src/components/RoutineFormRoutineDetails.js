@@ -38,8 +38,8 @@ export default class RoutineFormRoutineDetails extends Component {
               { value: "true", text: "Public" },
               { value: "false", text: "Private" }
             ]}
-            onChange={(ev) =>
-                actions.changeRoutine("public", (ev.target.value === "true"))} />
+            onChange={(ev, { value }) =>
+                actions.changeRoutine("public", (value === "true"))} />
         </Form.Field>
       </Segment>
     );

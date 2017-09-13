@@ -6,9 +6,16 @@ import { Segment, Icon } from 'semantic-ui-react';
 const RoutineDetails = ({routine}) => {
   const { description, link } = routine;
 
+  const privacy = (
+        <p>
+          Privacy Setting: { routine.public ? "Public" : "Private" }
+        </p>
+  );
+
   if(description || link) {
     return(
       <Segment attached>
+        { privacy }
         { description &&
           <p>{description}</p>
         }
@@ -26,7 +33,11 @@ const RoutineDetails = ({routine}) => {
     );
   }
 
-  return null;
+  return (
+    <Segment attached>
+      { privacy }
+    </Segment>
+  )
 }
 
 RoutineDetails.propTypes = {
